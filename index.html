@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Portfolio</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px;
+            background: #1e293b;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background: #020617;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        section {
+            padding: 40px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: #334155;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #020617;
+        }
+
+        button {
+            background: #38bdf8;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Fadel THIAM</h1>
+    <p>Étudiant en informatique | Développeur</p>
+</header>
+
+<nav>
+    <a href="#about">À propos</a>
+    <a href="#projects">Projets</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<section id="about">
+    <h2>À propos</h2>
+    <p>
+        Je suis étudiant en BUT Informatique. Passionné par le développement web,
+        je réalise des projets personnels et académiques (SAÉ).
+    </p>
+</section>
+
+<section id="projects">
+    <h2>Mes Projets</h2>
+
+    <div class="projects">
+        <!-- Projet 1 -->
+        <div class="card">
+            <h3>Le choixpeau pas Magique de Poudlard</h3>
+            <p>Travail en binôme</p>
+            <button onclick="location.href='s101.html'">Voir plus</button>
+        </div>
+
+        <!-- Projet 2 -->
+        <div class="card">
+            <h3>Le choixpeau pas Magique de Poudlard</h3>
+            <p>Travail en binôme suite de la saé s1.01</p>
+            <button onclick="location.href='s102.html'">Voir plus</button>
+        </div>
+        <!-- Projet 3-->
+        <div class="card">
+            <h3>Installation poste de développement</h3>
+            <p>Travail individuel</p>
+            <button onclick="location.href='s103.html'" >Voir plus</a></button>
+        </div>
+        <!--  Projet 4 -->
+        <div class="card">
+            <h3>Création d'une base de données</h3>
+            <p>Travail individuel</p>
+            <button onclick="location.href='s104.html'">Voir plus</button>
+        </div>
+        <!-- Projet 5 -->
+        <div class="card">
+            <h3>Recueil de besoins</h3>
+            <p>Travail en groupe de 6</p>
+            <button onclick="location.href='s105.html'">Voir plus</a></button>
+        </div>
+        <!-- Projet 6 -->
+        <div class="card">
+            <h3>Découverte de l'environnement économique et écologique</h3>
+            <p>Travail en groupe de 4</p>
+            <button onclick="location.href='s106.html'">Voir plus</a></button>
+        </div>
+        <!-- Ajoute jusqu’à 12 projets -->
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <p>Email : thiamfadel028@gmail.com</p>
+    <p>GitHub : github.com/fadhel028</p>
+</section>
+
+<footer>
+    <p>© 2026 - Fadel THIAM</p>
+</footer>
+
+</body>
+</html>
