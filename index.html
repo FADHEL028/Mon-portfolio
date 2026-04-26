@@ -6,84 +6,318 @@
     <title>Mon Portfolio</title>
 
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0f172a;
-            color: white;
-        }
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
 
-        header {
-            text-align: center;
-            padding: 40px;
-            background: #1e293b;
-        }
+/* =====================
+   VARIABLES & RESET
+   ===================== */
+:root {
+  --bg:        #0a0f1e;
+  --surface:   #111827;
+  --surface2:  #1a2236;
+  --text:      #e8eaf0;
+  --muted:     #64748b;
+  --border:    #1e2d45;
+  --accent:    #22d3ee;
+  --accent-rgb: 34, 211, 238;
+  --radius:    10px;
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
+body.light {
+  --bg:       #f8fafc;
+  --surface:  #ffffff;
+  --surface2: #f1f5f9;
+  --text:     #0f172a;
+  --muted:    #64748b;
+  --border:   #e2e8f0;
+}
 
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            background: #020617;
-            padding: 15px;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-        }
+html { scroll-behavior: smooth; }
 
-        nav a:hover {
-            color: #38bdf8;
-        }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-head);
+  line-height: 1.7;
+  transition: background 0.3s, color 0.3s;
+}
 
-        section {
-            padding: 40px;
-            max-width: 1000px;
-            margin: auto;
-        }
+/* =====================
+   HEADER
+   ===================== */
+header {
+  padding: 5rem 2rem 3rem;
+  max-width: 860px;
+  margin: 0 auto;
+  border-bottom: 0.5px solid var(--border);
+}
 
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+header h1 {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
 
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
+header h1::after {
+  content: '.';
+  color: var(--accent);
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-            background: #334155;
-        }
+header p {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin-top: 0.75rem;
+  letter-spacing: 0.04em;
+}
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #020617;
-        }
+/* =====================
+   NAV + MODE BUTTON
+   ===================== */
+nav {
+  display: flex;
+  gap: 2rem;
+  padding: 1.25rem 2rem;
+  max-width: 860px;
+  margin: 0 auto;
+  align-items: center;
+  border-bottom: 0.5px solid var(--border);
+}
 
-        button {
-            background: #38bdf8;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  transition: color 0.2s;
+  position: relative;
+}
 
-        button:hover {
-            background: #0ea5e9;
-        }
-        
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.25s;
+}
+
+nav a:hover { color: var(--accent); }
+nav a:hover::after { width: 100%; }
+
+/* Bouton mode clair/sombre — séparé du nav */
+div:has(#mode) {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#mode {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  border: 0.5px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+
+#mode:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* =====================
+   SECTIONS COMMUNES
+   ===================== */
+section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  border-bottom: 0.5px solid var(--border);
+}
+
+section h2 {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2rem;
+}
+
+/* =====================
+   SECTION À PROPOS
+   ===================== */
+#about p {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 680px;
+  line-height: 1.85;
+}
+
+abbr.initialism {
+  text-decoration: underline dotted var(--accent);
+  cursor: help;
+  color: var(--text);
+}
+
+/* =====================
+   SECTION PROJETS
+   ===================== */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  border-color: rgba(var(--accent-rgb), 0.4);
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.card p {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  flex: 1;
+}
+
+.card button {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 14px;
+  border-radius: calc(var(--radius) / 2);
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border: 0.5px solid rgba(var(--accent-rgb), 0.3);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.card button:hover {
+  background: rgba(var(--accent-rgb), 0.2);
+  border-color: var(--accent);
+}
+
+/* =====================
+   SECTION CONTACT
+   ===================== */
+#contact p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+  font-family: var(--font-mono);
+}
+
+#contact a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 0.5px solid rgba(var(--accent-rgb), 0.3);
+  transition: border-color 0.2s;
+}
+
+#contact a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+footer {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+footer p {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* =====================
+   CLASSES UTILITAIRES
+   ===================== */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border: 0.5px solid rgba(var(--accent-rgb), 0.25);
+  margin: 3px 2px;
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 10px 24px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.btn:hover { opacity: 0.85; }
+
+.accent { color: var(--accent); }
+.muted  { color: var(--muted); }
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 600px) {
+  header, nav, section, footer,
+  div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+  nav { gap: 1.25rem; flex-wrap: wrap; }
+
+  .projects { grid-template-columns: 1fr; }
+}
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -102,8 +336,10 @@
 <section id="about">
     <h2>À propos</h2>
     <p>
-        Je suis étudiant en BUT Informatique. Passionné par le développement web,
-        je réalise des projets personnels et académiques (SAÉ).
+        Je suis étudiant en <abbr class="initialism" title="Bachelor universitaire de technologie">BUT</abbr> Informatique à l'<abbr class="initialism" title="Institut universitaire de technologie">IUT</abbr> de Villetaneuse de l'Université Sorbonne Paris Nord. Passionné par le développement web,
+        je réalise des projets personnels et académiques (<abbr class="initialism" title="Situation d'Apprentissage et d'Évaluation">SAÉ</abbr>) pour approfondir mes compétences en programmation, gestion de bases de données et développement d'applications. 
+        Je suis à la recherche d'un contrat d'apprentissage pour une durée de deux ans avec un rythme deux semaines en formation, deux semaines en entreprise dans le but d'approfondir mes compétences et contribuer à des projets innovants.
+        J'ai des bases solides en <span class="tag">HTML</span>, <span class="tag">CSS</span>, <span class="tag">JavaScript</span>, <span class="tag">Python</span>, <span class="tag">Java</span>, <span class="tag">C</span>, <span class="tag">SQL</span>, <span class="tag">Langage assembleur </span>et je suis toujours avide d'apprendre de nouvelles technologies et de relever des défis techniques.
     </p>
 </section>
 
@@ -115,38 +351,38 @@
         <div class="card">
             <h3>Le choixpeau pas Magique de Poudlard</h3>
             <p>Travail en binôme</p>
-            <button onclick="location.href='s101.html'">Voir plus</button>
+            <button class="btn" onclick="location.href='s101.html'">Voir plus</button>
         </div>
 
         <!-- Projet 2 -->
         <div class="card">
-            <h3>Le choixpeau pas Magique de Poudlard</h3>
-            <p>Travail en binôme suite de la saé s1.01</p>
-            <button onclick="location.href='s102.html'">Voir plus</button>
+            <h3>Le nouveau choixpeau pas Magique de Poudlard</h3>
+            <p>Travail en binôme suite de la saé S1.01</p>
+            <button class="btn" onclick="location.href='s102.html'">Voir plus</button>
         </div>
         <!-- Projet 3-->
         <div class="card">
             <h3>Installation poste de développement</h3>
             <p>Travail individuel</p>
-            <button onclick="location.href='s103.html'" >Voir plus</a></button>
+            <button class="btn" onclick="location.href='s103.html'" >Voir plus</a></button>
         </div>
         <!--  Projet 4 -->
         <div class="card">
             <h3>Création d'une base de données</h3>
             <p>Travail individuel</p>
-            <button onclick="location.href='s104.html'">Voir plus</button>
+            <button class="btn" onclick="location.href='s104.html'">Voir plus</button>
         </div>
         <!-- Projet 5 -->
         <div class="card">
             <h3>Recueil de besoins</h3>
             <p>Travail en groupe de 6</p>
-            <button onclick="location.href='s105.html'">Voir plus</a></button>
+            <button class="btn" onclick="location.href='s105.html'">Voir plus</a></button>
         </div>
         <!-- Projet 6 -->
         <div class="card">
             <h3>Découverte de l'environnement économique et écologique</h3>
             <p>Travail en groupe de 4</p>
-            <button onclick="location.href='s106.html'">Voir plus</a></button>
+            <button class="btn" onclick="location.href='s106.html'">Voir plus</button>
         </div>
         <!-- Ajoute jusqu’à 12 projets -->
     </div>
@@ -154,13 +390,44 @@
 
 <section id="contact">
     <h2>Contact</h2>
-    <p>Email : thiamfadel028@gmail.com</p>
-    <p>GitHub : github.com/fadhel028</p>
+    <p>Email :<a href="mailto:thiamfadel028@gmail.com"> thiamfadel028@gmail.com</a></p>
+    <p>GitHub : <a href="https://github.com/FADHEL028">github.com/fadhel028</a></p>
+    <p>LinkedIn: <a href="https://linkedin.com/in/mouhamed-fadel-thiam-6402b2386">Mouhamed Fadel Thiam</a></p>
 </section>
 
 <footer>
     <p>© 2026 - Fadel THIAM</p>
 </footer>
-
+<script>
+    let modeButton = document.getElementById('mode');
+    modeButton.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        if(document.body.classList.contains('light-mode')) {
+            modeButton.textContent = 'Mode Sombre';
+            document.body.style.background = '#f8fafc'; 
+            document.body.style.color = '#0f172a';
+            document.querySelector('header').style.background = '#ffffff';
+            document.querySelector('header h1').style.color = '#0f172a';
+            document.querySelector('nav').style.background = '#f1f5f9';
+            $('.initialism').css('color' , '#0f172a');
+            $('.card').css('background', '#ffffff');
+            $('h3').css('color', '#0f172a')
+            document.querySelector('footer').style.background = '#f1f5f9';
+            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
+        } else {
+            modeButton.textContent = 'Mode Clair';
+            document.body.style.background = '#0a0f1e';
+            document.body.style.color = '#e8eaf0';
+            document.querySelector('header').style.background = '#111827';
+            document.querySelector('header h1').style.color = '#e8eaf0';
+            document.querySelector('nav').style.background = '#1a2236';  
+            $('.initialism').css('color' , '#e8eaf0');
+            $('.card').css('background', '#111827');
+            $('h3').css('color', 'white')
+            document.querySelector('footer').style.background = '#1a2236';
+            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
+        }
+    });
+</script>
 </body>
 </html>
