@@ -2,63 +2,139 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SAÉ 104 – Rapport de la saison balnéaire</title>
+    <title>SAÉ S1.04 – Rapport de la saison balnéaire</title>
     <style>
+         :root {
+            --bg:        #0a0f1e;
+            --surface:   #111827;
+            --surface2:  #1a2236;
+            --text:      #e8eaf0;
+            --muted:     #64748b;
+            --border:    #1e2d45;
+            --accent:    #3498db;
+            --accent-rgb: 52, 152, 219;
+            --radius:    10px;
+            --font-head: 'Syne', sans-serif;
+            --font-mono: 'DM Mono', monospace;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f5f7fa;
-            color: #333;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-head);
+            line-height: 1.7;
+            transition: background 0.3s, color 0.3s;
         }
+
         header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 5rem 2rem 3rem;
+            max-width: 860px;
+            margin: 0 auto;
+            border-bottom: 0.5px solid var(--border);
         }
+
         section {
-            max-width: 900px;
-            margin: 30px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            border-bottom: 0.5px solid var(--border);
         }
-        h2 {
-            color: #2c3e50;
-            border-left: 5px solid #3498db;
-            padding-left: 10px;
+
+        section h2 {
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
         }
+
         ul {
             line-height: 1.6;
         }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #38bdf8;
-            color: black;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+
         .tag {
             display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin: 5px 5px 0 0;
-            font-size: 0.9em;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            border: 0.5px solid rgba(var(--accent-rgb), 0.25);
+            margin: 3px 2px;
+        }
+        section .btn{
+            align-self: flex-start;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            padding: 6px 14px;
+            border-radius: calc(var(--radius) / 2);
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            border: 0.5px solid rgba(var(--accent-rgb), 0.3);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .btn {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 10px 24px;
+            border-radius: var(--radius);
+            background: var(--accent);
+            color: var(--bg);
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; }
+                div:has(#mode) {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #mode {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            padding: 6px 14px;
+            border-radius: var(--radius);
+            border: 0.5px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.04em;
+        }
+
+        #mode:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        @media (max-width: 600px) {
+            header, nav, section, footer,
+            div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+            nav { gap: 1.25rem; flex-wrap: wrap; }
+
+            .projects { grid-template-columns: 1fr; }
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
 <header>
-    <h1>SAÉ 104</h1>
+    <h1>SAÉ S1.04</h1>
     <p>Rapport de la saison balnéaire – 2024</p>
 </header>
-
+<div><button id="mode">Mode Clair</button></div>
 <section>
     <h2> Contexte</h2>
     <p>
@@ -116,6 +192,36 @@
     </p>
     <a href="index.html" class="btn"> Retour aux projets</a>
 </section>
-
+<script>
+    let modeButton = document.getElementById('mode');
+    modeButton.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        if(document.body.classList.contains('light-mode')) {
+            modeButton.textContent = 'Mode Sombre';
+            document.body.style.background = '#f8fafc'; 
+            document.body.style.color = '#0f172a';
+            document.querySelector('header').style.background = '#ffffff';
+            document.querySelector('header h1').style.color = '#0f172a';
+            document.querySelector('nav').style.background = '#f1f5f9';
+            $('.initialism').css('color' , '#0f172a');
+            $('.card').css('background', '#ffffff');
+            $('h3').css('color', '#0f172a')
+            document.querySelector('footer').style.background = '#f1f5f9';
+            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
+        } else {
+            modeButton.textContent = 'Mode Clair';
+            document.body.style.background = '#0a0f1e';
+            document.body.style.color = '#e8eaf0';
+            document.querySelector('header').style.background = '#111827';
+            document.querySelector('header h1').style.color = '#e8eaf0';
+            document.querySelector('nav').style.background = '#1a2236';  
+            $('.initialism').css('color' , '#e8eaf0');
+            $('.card').css('background', '#111827');
+            $('h3').css('color', 'white')
+            document.querySelector('footer').style.background = '#1a2236';
+            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
+        }
+    });
+</script>
 </body>
 </html>
