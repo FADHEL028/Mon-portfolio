@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>SAE 202 - Exploration algorithmique</title>
+
+    <style>
+        :root {
+            --bg:        #0a0f1e;
+            --surface:   #111827;
+            --surface2:  #1a2236;
+            --text:      #e8eaf0;
+            --muted:     #64748b;
+            --border:    #1e2d45;
+            --accent:    #3498db;
+            --accent-rgb: 52, 152, 219;
+            --radius:    10px;
+            --font-head: 'Syne', sans-serif;
+            --font-mono: 'DM Mono', monospace;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-head);
+            line-height: 1.7;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            padding: 5rem 2rem 3rem;
+            max-width: 860px;
+            margin: 0 auto;
+            border-bottom: 0.5px solid var(--border);
+        }
+
+        section {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            border-bottom: 0.5px solid var(--border);
+        }
+
+        section h2 {
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        ul {
+            line-height: 1.6;
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            border: 0.5px solid rgba(var(--accent-rgb), 0.25);
+            margin: 3px 2px;
+        }
+        section .btn{
+            align-self: flex-start;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            padding: 6px 14px;
+            border-radius: calc(var(--radius) / 2);
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            border: 0.5px solid rgba(var(--accent-rgb), 0.3);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .btn {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 10px 24px;
+            border-radius: var(--radius);
+            background: var(--accent);
+            color: var(--bg);
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.85; } 
+        div:has(#mode) {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #mode {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            padding: 6px 14px;
+            border-radius: var(--radius);
+            border: 0.5px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.04em;
+        }
+
+        #mode:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        @media (max-width: 600px) {
+            header, nav, section, footer,
+            div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+            nav { gap: 1.25rem; flex-wrap: wrap; }
+
+            .projects { grid-template-columns: 1fr; }
+        }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>SAE S2.02 - Exploration algorithmique d'un problème</h1>
+    <p>Projet académique - Mathématiques & Programmation</p>
+</header>
+<div><button id="mode">Mode Clair</button></div>
+<section>
+
+    <div>
+        <h2>Contexte</h2>
+        <p>
+            Cette SAE consiste à explorer l’ensemble de <a href="https://fr.wikipedia.org/wiki/Ensemble_de_Mandelbrot">Mandelbrot</a> en combinant
+            mathématiques et programmation. Le projet repose sur l’étude des nombres
+            complexes et leur utilisation pour générer des représentations graphiques.
+        </p>
+    </div>
+
+    <div>
+        <h2>Objectifs</h2>
+        <ul>
+            <li>Comprendre les nombres complexes</li>
+            <li>Manipuler des fonctions mathématiques en Python</li>
+            <li>Tracer des graphiques</li>
+            <li>Générer l’ensemble de Mandelbrot</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Outils utilisés</h2>
+        <ul>
+            <li>Python</li>
+            <li>Bibliothèque math</li>
+            <li>Matplotlib</li>
+            <li>Jupyter Notebook</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Méthodologie</h2>
+        <ul>
+            <li>Apprentissage des fonctions mathématiques</li>
+            <li>Manipulation de listes pour générer des données</li>
+            <li>Création de graphiques</li>
+            <li>Implémentation des nombres complexes</li>
+            <li>Construction de l’algorithme de Mandelbrot</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Réalisations techniques</h2>
+        <ul>
+            <li>Création de fonctions sur les nombres complexes (addition, produit...)</li>
+            <li>Conversion cartésienne / polaire</li>
+            <li>Utilisation de matplotlib pour tracer des courbes</li>
+            <li>Implémentation de la fonction f(z) = z² + c</li>
+            <li>Génération graphique de l’ensemble de Mandelbrot</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Difficultés rencontrées</h2>
+        <ul>
+            <li>Compréhension des nombres complexes</li>
+            <li>Gestion des conversions cartésiennes et polaires</li>
+            <li>Optimisation du calcul (temps d’exécution)</li>
+            <li>Affichage graphique précis</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Résultats</h2>
+        <p>
+            Le projet a permis de générer une représentation graphique de l’ensemble de
+            Mandelbrot et de comprendre son fonctionnement mathématique.
+        </p>
+    </div>
+
+    <div>
+        <h2>Compétences acquises</h2>
+        <ul>
+            <li>Algorithmique</li>
+            <li>Programmation Python</li>
+            <li>Mathématiques avancées (nombres complexes)</li>
+            <li>Visualisation de données</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Exemple de résultat</h2>
+        <p>Visualisation de l’ensemble de Mandelbrot :</p>
+        <img src="Mandelbrot100.png" alt="Mandelbrot">
+    </div>
+
+    
+
+</section>
+<section>
+    <button class="btn" onclick="location.href='index.html'">Retour aux projets</button>
+</section>
+n 
+<script>
+    let modeButton = document.getElementById('mode');
+    modeButton.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        if(document.body.classList.contains('light-mode')) {
+            modeButton.textContent = 'Mode Sombre';
+            document.body.style.background = '#f8fafc'; 
+            document.body.style.color = '#0f172a';
+            document.querySelector('header').style.background = '#ffffff';
+            document.querySelector('header h1').style.color = '#0f172a';
+            document.querySelector('nav').style.background = '#f1f5f9';
+            $('.initialism').css('color' , '#0f172a');
+            $('.card').css('background', '#ffffff');
+            $('h3').css('color', '#0f172a')
+            document.querySelector('footer').style.background = '#f1f5f9';
+            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
+        } else {
+            modeButton.textContent = 'Mode Clair';
+            document.body.style.background = '#0a0f1e';
+            document.body.style.color = '#e8eaf0';
+            document.querySelector('header').style.background = '#111827';
+            document.querySelector('header h1').style.color = '#e8eaf0';
+            document.querySelector('nav').style.background = '#1a2236';  
+            $('.initialism').css('color' , '#e8eaf0');
+            $('.card').css('background', '#111827');
+            $('h3').css('color', 'white')
+            document.querySelector('footer').style.background = '#1a2236';
+            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
+        }
+    });
+</script>
+
+</body>
+</html>
