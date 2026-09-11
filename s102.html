@@ -3,140 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <title>SAE S1.02 – Le nouveau choixpeau pas magique</title>
-
     <style>
-          :root {
-            --bg:        #0a0f1e;
-            --surface:   #111827;
-            --surface2:  #1a2236;
-            --text:      #e8eaf0;
-            --muted:     #64748b;
-            --border:    #1e2d45;
-            --accent:    #3498db;
-            --accent-rgb: 52, 152, 219;
-            --radius:    10px;
-            --font-head: 'Syne', sans-serif;
-            --font-mono: 'DM Mono', monospace;
+        @page {
+            size: A4;
+            margin: 15mm 12mm;
+            background-color: #0a0f1e;
         }
-
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font-head);
-            line-height: 1.7;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        header {
-            padding: 5rem 2rem 3rem;
-            max-width: 860px;
-            margin: 0 auto;
-            border-bottom: 0.5px solid var(--border);
-        }
-
-        section {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            border-bottom: 0.5px solid var(--border);
-        }
-
-        section h2 {
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 2rem;
-        }
-
-        ul {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #0a0f1e;
+            color: #e8eaf0;
+            margin: 0;
+            padding: 0;
+            font-size: 10.5pt;
             line-height: 1.6;
         }
-
+        header {
+            background-color: #111827;
+            border-bottom: 1px solid #1e2d45;
+            margin: -15mm -12mm 20px -12mm;
+            padding: 25px 12mm;
+        }
+        h1 {
+            margin: 0;
+            font-size: 20pt;
+            color: #3498db;
+            letter-spacing: -0.5px;
+        }
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 11pt;
+            color: #64748b;
+        }
+        section {
+            background-color: #111827;
+            border: 1px solid #1e2d45;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 14px;
+            page-break-inside: avoid;
+        }
+        h2 {
+            font-size: 9pt;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #1e2d45;
+            padding-bottom: 4px;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 10pt;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 4px;
+            font-size: 9.5pt;
+        }
         .tag {
             display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 8.5pt;
             padding: 3px 10px;
             border-radius: 4px;
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 0.5px solid rgba(var(--accent-rgb), 0.25);
-            margin: 3px 2px;
-        }
-        section .btn{
-            align-self: flex-start;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: calc(var(--radius) / 2);
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 0.5px solid rgba(var(--accent-rgb), 0.3);
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
+            background-color: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            margin: 2px;
         }
         .btn {
             display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            padding: 10px 24px;
-            border-radius: var(--radius);
-            background: var(--accent);
-            color: var(--bg);
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
+            font-size: 9pt;
+            padding: 8px 18px;
+            border-radius: 6px;
+            background-color: #3498db;
+            color: #0a0f1e;
+            font-weight: bold;
             text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .btn:hover { opacity: 0.85; }
-                div:has(#mode) {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        #mode {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: var(--radius);
-            border: 0.5px solid var(--border);
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.04em;
-        }
-
-        #mode:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        @media (max-width: 600px) {
-            header, nav, section, footer,
-            div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
-
-            nav { gap: 1.25rem; flex-wrap: wrap; }
-
-            .projects { grid-template-columns: 1fr; }
+            margin-top: 5px;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body>
 
 <header>
     <h1>SAE S1.02</h1>
     <p>Le nouveau choixpeau pas magique de Poudlard</p>
 </header>
-<div><button id="mode">Mode Clair</button></div>
+
 <section>
     <h2>Contexte</h2>
     <p>
@@ -161,8 +123,8 @@
         Chaque élève répond à 10 questions notées de 1 à 10. Les données sont stockées sous forme de dictionnaire :
     </p>
     <ul>
-        <li>Clé : nom de l’élève</li>
-        <li>Valeur : liste de 10 entiers</li>
+        <li><strong>Clé :</strong> nom de l’élève</li>
+        <li><strong>Valeur :</strong> liste de 10 entiers</li>
     </ul>
 </section>
 
@@ -190,11 +152,11 @@
 <section>
     <h2>Fonctions principales</h2>
     <ul>
-        <li>create_answers_from_text_file</li>
-        <li>euclidean_distance</li>
-        <li>euclidean_house</li>
-        <li>NN</li>
-        <li>NN_repartition</li>
+        <li><code>create_answers_from_text_file</code></li>
+        <li><code>euclidean_distance</code></li>
+        <li><code>euclidean_house</code></li>
+        <li><code>NN</code></li>
+        <li><code>NN_repartition</code></li>
     </ul>
 </section>
 
@@ -223,39 +185,9 @@
     <div class="tag">Structures de données</div>
 </section>
 
-<section>
+<section style="background: transparent; border: none; padding: 0;">
     <a href="index.html" class="btn">Retour aux projets</a>
 </section>
-<script>
-    let modeButton = document.getElementById('mode');
-    modeButton.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if(document.body.classList.contains('light-mode')) {
-            modeButton.textContent = 'Mode Sombre';
-            document.body.style.background = '#f8fafc'; 
-            document.body.style.color = '#0f172a';
-            document.querySelector('header').style.background = '#ffffff';
-            document.querySelector('header h1').style.color = '#0f172a';
-            document.querySelector('nav').style.background = '#f1f5f9';
-            $('.initialism').css('color' , '#0f172a');
-            $('.card').css('background', '#ffffff');
-            $('h3').css('color', '#0f172a')
-            document.querySelector('footer').style.background = '#f1f5f9';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        } else {
-            modeButton.textContent = 'Mode Clair';
-            document.body.style.background = '#0a0f1e';
-            document.body.style.color = '#e8eaf0';
-            document.querySelector('header').style.background = '#111827';
-            document.querySelector('header h1').style.color = '#e8eaf0';
-            document.querySelector('nav').style.background = '#1a2236';  
-            $('.initialism').css('color' , '#e8eaf0');
-            $('.card').css('background', '#111827');
-            $('h3').css('color', 'white')
-            document.querySelector('footer').style.background = '#1a2236';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        }
-    });
-</script>
+
 </body>
 </html>

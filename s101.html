@@ -252,6 +252,54 @@ section ul li::before {
 }
 
 /* =====================
+   CODE BLOCK & ACTION
+   ===================== */
+.code-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.code-header {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+pre {
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.download-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.2s;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+/* =====================
    TAGS & BUTTONS
    ===================== */
 .tags-wrapper {
@@ -346,8 +394,8 @@ footer {
                 <span class="bento-value">Python 3</span>
             </div>
             <div class="bento-item">
-                <span class="bento-label">Cadre</span>
-                <span class="bento-value">IUT de Villetaneuse</span>
+                <span class="bento-label">Fichier principal</span>
+                <span class="bento-value">s101.py</span>
             </div>
             <div class="bento-item">
                 <span class="bento-label">Modalité</span>
@@ -370,10 +418,44 @@ footer {
             <h2>Objectifs</h2>
             <ul>
                 <li>Respecter un cahier des charges fonctionnel et rigoureux</li>
-                <li>Développer un programme structuré et modulaire</li>
+                <li>Développement du script principal <code style="font-family: var(--font-mono); color: var(--accent);">s101.py</code></li>
                 <li>Implémenter une logique de décision déterministe</li>
                 <li>Tester et valider formellement les résultats produits</li>
             </ul>
+        </section>
+
+        <section>
+            <h2>Script Python (s101.py)</h2>
+            <p style="margin-bottom: 1rem;">
+                Le cœur du projet réside dans le fichier <strong><code>s101.py</code></strong>. Il contient la logique d'acquisition des données, les fonctions d'évaluation ainsi que l'algorithme d’affectation aux différentes maisons/catégories.
+            </p>
+            <div class="code-container">
+                <div class="code-header">
+                    <span>s101.py</span>
+                    <a href="s101.py" download class="download-link"> Télécharger le fichier .py</a>
+                </div>
+                <pre><code># SAÉ S1.01 - Algorithme de répartition du Choixpeau
+# Auteurs: Fadel Thiam & Binôme
+
+def calculer_score(reponses):
+    """
+    Calcule le profil de l'élève en fonction de ses réponses (1 à 10).
+    Retourne la catégorie dominante.
+    """
+    profils = {
+        "Gryffondor": reponses[0], # Action
+        "Serdaigle":  reponses[1], # Intellectuel
+        "Poufsouffle": reponses[2], # Social
+        "Serpentard":  reponses[3]  # Ambitieux
+    }
+    # Résolution des égalités et détermination de la maison
+    maison_attribuee = max(profils, key=profils.get)
+    return maison_attribuee
+
+if __name__ == "__main__":
+    print("=== Questionnaire du Choixpeau pas Magique ===")
+    # Exécution du programme principal...</code></pre>
+            </div>
         </section>
 
         <section>
@@ -392,7 +474,7 @@ footer {
         <section>
             <h2>Technologies & Concepts</h2>
             <ul>
-                <li>Langage Python</li>
+                <li>Langage Python 3</li>
                 <li>Structures conditionnelles et contrôle de flux</li>
                 <li>Fonctions et modularité du code</li>
                 <li>Tests unitaires automatisés</li>
@@ -404,7 +486,7 @@ footer {
             <ul>
                 <li>Analyse approfondie du besoin et du problème</li>
                 <li>Conception algorithmique et modélisation</li>
-                <li>Implémentation propre en Python</li>
+                <li>Implémentation propre dans le fichier Python</li>
                 <li>Campagne de tests et validation opérationnelle</li>
             </ul>
         </section>
