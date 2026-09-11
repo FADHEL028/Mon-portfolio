@@ -2,253 +2,465 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SAE S1.01 – Algorithme de répartition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAÉ S1.01 — Le Choixpeau pas Magique de Poudlard</title>
 
     <style>
-        :root {
-            --bg:        #0a0f1e;
-            --surface:   #111827;
-            --surface2:  #1a2236;
-            --text:      #e8eaf0;
-            --muted:     #64748b;
-            --border:    #1e2d45;
-            --accent:    #3498db;
-            --accent-rgb: 52, 152, 219;
-            --radius:    10px;
-            --font-head: 'Syne', sans-serif;
-            --font-mono: 'DM Mono', monospace;
-        }
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font-head);
-            line-height: 1.7;
-            transition: background 0.3s, color 0.3s;
-        }
+/* =====================
+   VARIABLES & THEMES
+   ===================== */
+:root {
+  --bg:           #080c14;
+  --surface:      rgba(15, 23, 42, 0.65);
+  --surface-hover:rgba(30, 41, 59, 0.8);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.4);
+  
+  --text:         #f8fafc;
+  --muted:        #94a3b8;
+  
+  --accent:       #38bdf8;
+  --accent-glow:  rgba(56, 189, 248, 0.15);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  
+  --radius:       12px;
+  --font-sans:    'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
 
-        header {
-            padding: 5rem 2rem 3rem;
-            max-width: 860px;
-            margin: 0 auto;
-            border-bottom: 0.5px solid var(--border);
-        }
+body.light {
+  --bg:           #f1f5f9;
+  --surface:      rgba(255, 255, 255, 0.85);
+  --surface-hover:rgba(255, 255, 255, 1);
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(2, 132, 199, 0.4);
+  
+  --text:         #0f172a;
+  --muted:        #475569;
+  
+  --accent:       #0284c7;
+  --accent-glow:  rgba(2, 132, 199, 0.08);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+}
 
-        section {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            border-bottom: 0.5px solid var(--border);
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        section h2 {
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 2rem;
-        }
+html { scroll-behavior: smooth; }
 
-        ul {
-            line-height: 1.6;
-        }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--accent-glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
+}
 
-        .tag {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 4px;
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 0.5px solid rgba(var(--accent-rgb), 0.25);
-            margin: 3px 2px;
-        }
-        section .btn{
-            align-self: flex-start;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: calc(var(--radius) / 2);
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 0.5px solid rgba(var(--accent-rgb), 0.3);
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .btn {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            padding: 10px 24px;
-            border-radius: var(--radius);
-            background: var(--accent);
-            color: var(--bg);
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
 
-        .btn:hover { opacity: 0.85; } 
-        div:has(#mode) {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: flex-end;
-        }
+/* =====================
+   LAYOUT
+   ===================== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
-        #mode {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: var(--radius);
-            border: 0.5px solid var(--border);
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.04em;
-        }
+/* =====================
+   NAVBAR
+   ===================== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
 
-        #mode:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        @media (max-width: 600px) {
-            header, nav, section, footer,
-            div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
+.back-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s;
+}
 
-            nav { gap: 1.25rem; flex-wrap: wrap; }
+.back-link:hover, .back-link:focus-visible {
+  color: var(--accent);
+}
 
-            .projects { grid-template-columns: 1fr; }
-        }
+#mode {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
 
+#mode:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* =====================
+   HEADER & BENTO GRID
+   ===================== */
+header {
+  padding: 3.5rem 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+header .subtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.bento-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.bento-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+}
+
+.bento-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.bento-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* =====================
+   SECTIONS & CONTENT
+   ===================== */
+section {
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+section p, section ul {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+section ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+}
+
+section ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* =====================
+   TAGS & BUTTONS
+   ===================== */
+.tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+}
+
+.btn-container {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  color: var(--accent);
+  box-shadow: 0 8px 20px -5px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+footer {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .bento-info { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
 
-<header>
-    <h1>SAE S1.01</h1>
-    <p>Développement d’un algorithme de répartition</p>
-</header>
-<div><button id="mode">Mode Clair</button></div>
-<section>
-    <h2> Contexte</h2>
-    <p>
-        Cette SAÉ consiste à concevoir un programme capable de répartir automatiquement
-        des élèves dans différentes catégories à partir d’un questionnaire.
-        Le projet s’inspire d’un système de décision basé sur des critères définis.
-    </p>
-</section>
+<div class="container">
+    <nav aria-label="Navigation principale">
+        <a href="index.html" class="back-link">← Retour aux projets</a>
+        <button id="mode" aria-label="Changer le thème">Mode Clair</button>
+    </nav>
 
-<section>
-    <h2> Objectifs</h2>
-    <ul>
-        <li>Respecter un cahier des charges</li>
-        <li>Développer un programme structuré</li>
-        <li>Implémenter une logique de décision</li>
-        <li>Tester et valider les résultats</li>
-    </ul>
-</section>
+    <header>
+        <span class="project-badge">SAÉ S1.01 — Binôme</span>
+        <h1><span class="title-gradient">Le Choixpeau pas Magique</span></h1>
+        <p class="subtitle">Développement d’un algorithme de répartition algorithmique</p>
 
-<section>
-    <h2> Principe de fonctionnement</h2>
-    <p>
-        Le programme repose sur un questionnaire à 4 questions. Chaque réponse est notée
-        entre 1 et 10. L’élève est ensuite affecté à une catégorie en fonction de son score le plus élevé.
-    </p>
-    <ul>
-        <li>Question 1 → Profil orienté action</li>
-        <li>Question 2 → Profil intellectuel</li>
-        <li>Question 3 → Profil social</li>
-        <li>Question 4 → Profil ambitieux</li>
-    </ul>
-</section>
+        <div class="bento-info">
+            <div class="bento-item">
+                <span class="bento-label">Langage</span>
+                <span class="bento-value">Python 3</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Cadre</span>
+                <span class="bento-value">IUT de Villetaneuse</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Modalité</span>
+                <span class="bento-value">Travail en Binôme</span>
+            </div>
+        </div>
+    </header>
 
-<section>
-    <h2> Technologies utilisées</h2>
-    <ul>
-        <li>Python</li>
-        <li>Structures conditionnelles</li>
-        <li>Fonctions</li>
-        <li>Tests unitaires</li>
-    </ul>
-</section>
+    <main>
+        <section>
+            <h2>Contexte</h2>
+            <p>
+                Cette SAÉ consiste à concevoir un programme capable de répartir automatiquement
+                des élèves dans différentes catégories à partir d’un questionnaire.
+                Le projet s’inspire d’un système de décision basé sur des critères bien définis.
+            </p>
+        </section>
 
-<section>
-    <h2> Méthodologie</h2>
-    <ul>
-        <li>Analyse du problème</li>
-        <li>Conception de l’algorithme</li>
-        <li>Implémentation en Python</li>
-        <li>Tests et validation</li>
-    </ul>
-</section>
+        <section>
+            <h2>Objectifs</h2>
+            <ul>
+                <li>Respecter un cahier des charges fonctionnel et rigoureux</li>
+                <li>Développer un programme structuré et modulaire</li>
+                <li>Implémenter une logique de décision déterministe</li>
+                <li>Tester et valider formellement les résultats produits</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Difficultés rencontrées</h2>
-    <ul>
-        <li>Gestion des cas d’égalité</li>
-        <li>Structuration du code</li>
-        <li>Mise en place des tests</li>
-    </ul>
-</section>
+        <section>
+            <h2>Principe de fonctionnement</h2>
+            <p style="margin-bottom: 1rem;">
+                Le programme repose sur un questionnaire comportant 4 questions clés. Chaque réponse est évaluée avec un score compris entre 1 et 10. L’élève est ensuite affecté à une catégorie en fonction de son score prédominant.
+            </p>
+            <ul>
+                <li>Question 1 → Profil orienté action</li>
+                <li>Question 2 → Profil intellectuel</li>
+                <li>Question 3 → Profil social</li>
+                <li>Question 4 → Profil ambitieux</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Résultats</h2>
-    <p>
-        Un programme fonctionnel a été développé permettant de traiter les réponses
-        et de produire une décision cohérente automatiquement.
-    </p>
-</section>
+        <section>
+            <h2>Technologies & Concepts</h2>
+            <ul>
+                <li>Langage Python</li>
+                <li>Structures conditionnelles et contrôle de flux</li>
+                <li>Fonctions et modularité du code</li>
+                <li>Tests unitaires automatisés</li>
+            </ul>
+        </section>
 
-<section>
-    <h2> Compétences développées</h2>
-    <div class="tag">Algorithmique</div>
-    <div class="tag">Python</div>
-    <div class="tag">Logique</div>
-    <div class="tag">Tests</div>
-</section>
+        <section>
+            <h2>Méthodologie</h2>
+            <ul>
+                <li>Analyse approfondie du besoin et du problème</li>
+                <li>Conception algorithmique et modélisation</li>
+                <li>Implémentation propre en Python</li>
+                <li>Campagne de tests et validation opérationnelle</li>
+            </ul>
+        </section>
 
-<section>
-    <button class="btn" onclick="location.href='index.html'"    > Retour aux projets</button>
-</section>
+        <section>
+            <h2>Difficultés rencontrées</h2>
+            <ul>
+                <li>Gestion robuste des cas d’égalité entre plusieurs scores</li>
+                <li>Structuration propre et découpage modulaire du code</li>
+                <li>Mise en place de jeux de tests couvrants pour valider les règles métier</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Résultats obtenus</h2>
+            <p>
+                Un programme fonctionnel et testé a été développé, permettant de traiter automatiquement les réponses et d'émettre une décision de répartition cohérente et sans ambiguïté.
+            </p>
+        </section>
+
+        <section>
+            <h2>Compétences développées</h2>
+            <div class="tags-wrapper">
+                <span class="tag">Algorithmique</span>
+                <span class="tag">Python</span>
+                <span class="tag">Logique de décision</span>
+                <span class="tag">Tests unitaires</span>
+            </div>
+        </section>
+
+        <div class="btn-container">
+            <a href="index.html" class="btn">← Retour à l'accueil</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Fadel Thiam</p>
+        <p>IUT de Villetaneuse — USPN</p>
+    </footer>
+</div>
+
 <script>
-    let modeButton = document.getElementById('mode');
-    modeButton.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if(document.body.classList.contains('light-mode')) {
-            modeButton.textContent = 'Mode Sombre';
-            document.body.style.background = '#f8fafc'; 
-            document.body.style.color = '#0f172a';
-            document.querySelector('header').style.background = '#ffffff';
-            document.querySelector('header h1').style.color = '#0f172a';
-            document.querySelector('nav').style.background = '#f1f5f9';
-            $('.initialism').css('color' , '#0f172a');
-            $('.card').css('background', '#ffffff');
-            $('h3').css('color', '#0f172a')
-            document.querySelector('footer').style.background = '#f1f5f9';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        } else {
-            modeButton.textContent = 'Mode Clair';
-            document.body.style.background = '#0a0f1e';
-            document.body.style.color = '#e8eaf0';
-            document.querySelector('header').style.background = '#111827';
-            document.querySelector('header h1').style.color = '#e8eaf0';
-            document.querySelector('nav').style.background = '#1a2236';  
-            $('.initialism').css('color' , '#e8eaf0');
-            $('.card').css('background', '#111827');
-            $('h3').css('color', 'white')
-            document.querySelector('footer').style.background = '#1a2236';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        }
-    });
+  const modeButton = document.getElementById('mode');
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    modeButton.textContent = 'Mode Sombre';
+  }
+
+  modeButton.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
 </script>
+
 </body>
 </html>
