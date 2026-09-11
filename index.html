@@ -3,35 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fadel THIAM - Portfolio</title>
+    <title>Fadel THIAM — Développeur Software</title>
 
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* =====================
    VARIABLES & RESET
    ===================== */
 :root {
-  --bg:        #0a0f1e;
-  --surface:   #111827;
-  --surface2:  #1a2236;
-  --text:      #e8eaf0;
-  --muted:     #8892b0;
-  --border:    #1e2d45;
-  --accent:    #3498db;
-  --accent-rgb: 52, 152, 219;
-  --radius:    10px;
-  --font-head: 'Syne', sans-serif;
-  --font-mono: 'DM Mono', monospace;
+  --bg:          #0b0f19;
+  --surface:     #111827;
+  --surface-hover:#1f293d;
+  --text:        #f3f4f6;
+  --muted:       #9ca3af;
+  --border:      #1f2937;
+  --accent:      #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.1);
+  --radius:      8px;
+  --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:   'JetBrains Mono', monospace;
 }
 
 body.light {
-  --bg:       #f8fafc;
-  --surface:  #ffffff;
-  --surface2: #f1f5f9;
-  --text:     #0f172a;
-  --muted:    #64748b;
-  --border:   #e2e8f0;
+  --bg:          #f8fafc;
+  --surface:     #ffffff;
+  --surface-hover:#f1f5f9;
+  --text:        #0f172a;
+  --muted:       #475569;
+  --border:      #e2e8f0;
+  --accent:      #0284c7;
+  --accent-soft: rgba(2, 132, 199, 0.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,59 +43,42 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-head);
-  line-height: 1.7;
-  transition: background 0.3s ease, color 0.3s ease;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessibilité : Focus clavier clair */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* =====================
-   HEADER
+   CONTAINER & NAV
    ===================== */
-header {
-  padding: 5rem 2rem 3rem;
-  max-width: 860px;
+.container {
+  max-width: 800px;
   margin: 0 auto;
-  border-bottom: 0.5px solid var(--border);
+  padding: 0 1.5rem;
 }
 
-header h1 {
-  font-size: clamp(2.4rem, 6vw, 4rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  line-height: 1.1;
-}
-
-header h1::after {
-  content: '.';
-  color: var(--accent);
-}
-
-header p {
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  color: var(--accent);
-  margin-top: 0.75rem;
-  letter-spacing: 0.04em;
-}
-
-/* =====================
-   NAV + MODE BUTTON
-   ===================== */
 nav {
   display: flex;
-  gap: 2rem;
-  padding: 1.25rem 2rem;
-  max-width: 860px;
-  margin: 0 auto;
+  justify-content: space-between;
   align-items: center;
-  border-bottom: 0.5px solid var(--border);
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   background: var(--bg);
-  backdrop-filter: blur(10px);
   z-index: 100;
-  transition: background 0.3s ease;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
 }
 
 nav a {
@@ -101,388 +86,393 @@ nav a {
   font-size: 0.85rem;
   color: var(--muted);
   text-decoration: none;
-  letter-spacing: 0.05em;
-  text-transform: lowercase;
   transition: color 0.2s;
-  position: relative;
 }
 
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.25s ease;
-}
-
-nav a:hover { color: var(--accent); }
-nav a:hover::after { width: 100%; }
-
-/* Bouton mode clair/sombre */
-div:has(#mode) {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: flex-end;
+nav a:hover, nav a:focus-visible {
+  color: var(--accent);
 }
 
 #mode {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  padding: 6px 14px;
+  font-size: 0.8rem;
+  padding: 6px 12px;
   border-radius: var(--radius);
-  border: 0.5px solid var(--border);
+  border: 1px solid var(--border);
   background: var(--surface);
-  color: var(--muted);
+  color: var(--text);
   cursor: pointer;
   transition: all 0.2s ease;
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 #mode:hover {
   border-color: var(--accent);
   color: var(--accent);
-  transform: translateY(-1px);
+}
+
+/* =====================
+   HEADER
+   ===================== */
+header {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  margin-bottom: 1.25rem;
+}
+
+header h1 {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+header p {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-top: 0.75rem;
 }
 
 /* =====================
    SECTIONS COMMUNES
    ===================== */
 section {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-  border-bottom: 0.5px solid var(--border);
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
 }
 
 section h2 {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-family: var(--font-mono);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-section h2::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-  opacity: 0.5;
+  margin-bottom: 1.5rem;
 }
 
 /* =====================
    SECTION À PROPOS
    ===================== */
 #about p {
-  font-size: 1.02rem;
-  color: var(--muted);
-  max-width: 720px;
-  line-height: 1.85;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.75;
 }
 
-abbr.initialism {
-  text-decoration: underline dotted var(--accent);
-  cursor: help;
+.about-highlight {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.95rem;
+}
+
+.tags-container {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--surface);
   color: var(--text);
+  border: 1px solid var(--border);
 }
 
 /* =====================
    SECTION PROJETS
    ===================== */
-.projects {
+.projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
 }
 
 .card {
   background: var(--surface);
-  border: 0.5px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1rem;
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.card:hover {
-  border-color: rgba(var(--accent-rgb), 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3);
+.card:hover, .card:focus-visible {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.card-type {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
 }
 
 .card h3 {
-  font-size: 0.98rem;
-  font-weight: 500;
-  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
   line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
-.card-badge {
+.card-link {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--muted);
-  background: var(--surface2);
-  padding: 3px 8px;
-  border-radius: 4px;
-  display: inline-block;
-  align-self: flex-start;
-}
-
-.card button {
-  align-self: flex-start;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  padding: 8px 16px;
-  border-radius: calc(var(--radius) / 2);
-  background: rgba(var(--accent-rgb), 0.08);
+  font-size: 0.8rem;
   color: var(--accent);
-  border: 0.5px solid rgba(var(--accent-rgb), 0.25);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.card button:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-.card button span {
-  transition: transform 0.2s ease;
-}
-
-.card button:hover span {
-  transform: translateX(3px);
+  font-weight: 500;
 }
 
 /* =====================
    SECTION CONTACT
    ===================== */
-.contact-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
-.contact-item {
-  font-size: 0.92rem;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.contact-item a {
-  color: var(--text);
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: var(--radius);
   text-decoration: none;
-  border-bottom: 1px dotted rgba(var(--accent-rgb), 0.5);
-  transition: color 0.2s, border-color 0.2s;
+  color: inherit;
+  transition: border-color 0.2s;
 }
 
-.contact-item a:hover {
-  color: var(--accent);
-  border-bottom-style: solid;
+.contact-card:hover, .contact-card:focus-visible {
+  border-color: var(--accent);
+}
+
+.contact-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: block;
+}
+
+.contact-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-top: 0.25rem;
+  word-break: break-all;
 }
 
 /* =====================
    FOOTER
    ===================== */
 footer {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 2.5rem 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-footer p {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
-/* =====================
-   CLASSES UTILITAIRES
-   ===================== */
-.tag {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgba(var(--accent-rgb), 0.1);
-  color: var(--accent);
-  border: 0.5px solid rgba(var(--accent-rgb), 0.25);
-  margin: 2px 1px;
-}
-
-/* =====================
-   RESPONSIVE
-   ===================== */
 @media (max-width: 600px) {
-  header, nav, section, footer,
-  div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
-
-  nav { gap: 1.25rem; flex-wrap: wrap; }
-
-  .projects { grid-template-columns: 1fr; }
+  header h1 { font-size: 2rem; }
+  .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 0.5rem; }
 }
     </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Fadel THIAM</h1>
-    <p>Étudiant en informatique | Développeur</p>
-</header>
+<div class="container">
+    <nav aria-label="Navigation principale">
+        <div class="nav-links">
+            <a href="#about">À propos</a>
+            <a href="#projects">Projets</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button id="mode" aria-label="Changer le thème">Mode Clair</button>
+    </nav>
 
-<nav>
-    <a href="#about">À propos</a>
-    <a href="#projects">Projets</a>
-    <a href="#contact">Contact</a>
-</nav>
+    <header>
+        <div class="status-badge">Recherche d'apprentissage (2 ans)</div>
+        <h1>Fadel Thiam</h1>
+        <p>Étudiant en BUT Informatique & Développeur Software</p>
+    </header>
 
-<div>
-    <button id="mode">
-        <span id="mode-icon">☀️</span> <span id="mode-text">Mode Clair</span>
-    </button>
+    <main>
+        <section id="about" aria-labelledby="heading-about">
+            <h2 id="heading-about">À propos</h2>
+            <p>
+                Étudiant en BUT Informatique à l'IUT de Villetaneuse (Université Sorbonne Paris Nord), je me passionne pour le développement d'applications et la conception d'architectures logicielles.
+            </p>
+            
+            <div class="about-highlight">
+                <strong>Recherche de rythme :</strong> 2 semaines en formation / 2 semaines en entreprise à partir de la rentrée pour approfondir mes compétences sur des projets réels.
+            </div>
+
+            <div class="tags-container" aria-label="Technologies maîtrisées">
+                <span class="tag">HTML/CSS</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">Python</span>
+                <span class="tag">Java</span>
+                <span class="tag">C</span>
+                <span class="tag">SQL</span>
+                <span class="tag">Assembleur</span>
+            </div>
+        </section>
+
+        <section id="projects" aria-labelledby="heading-projects">
+            <h2 id="heading-projects">Projets académiques & personnels</h2>
+
+            <div class="projects-grid">
+                <a href="s101.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S1.01 — Binôme</span>
+                        </div>
+                        <h3>Le Choixpeau pas Magique de Poudlard</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+
+                <a href="s102.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S1.02 — Binôme</span>
+                        </div>
+                        <h3>Le Choixpeau pas Magique (Partie 2)</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+
+                <a href="s103.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S1.03 — Individuel</span>
+                        </div>
+                        <h3>Installation poste de développement</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+
+                <a href="s104.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S1.04 — Individuel</span>
+                        </div>
+                        <h3>Création & gestion de bases de données</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+
+                <a href="s105.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S1.05 — Groupe (6)</span>
+                        </div>
+                        <h3>Recueil de besoins client</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+
+                <a href="s106.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S1.06 — Groupe (4)</span>
+                        </div>
+                        <h3>Découverte environnement éco & écolo</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+
+                <a href="s202.html" class="card">
+                    <div>
+                        <div class="card-header">
+                            <span class="card-type">SAÉ S2.02 — Individuel</span>
+                        </div>
+                        <h3>Exploration algorithmique d'un problème</h3>
+                    </div>
+                    <span class="card-link">Consulter le projet</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="contact" aria-labelledby="heading-contact">
+            <h2 id="heading-contact">Contact & Liens</h2>
+            <div class="contact-grid">
+                <a href="mailto:thiamfadel028@gmail.com" class="contact-card">
+                    <span class="contact-label">Email</span>
+                    <span class="contact-value">thiamfadel028@gmail.com</span>
+                </a>
+
+                <a href="https://github.com/FADHEL028" target="_blank" rel="noopener" class="contact-card">
+                    <span class="contact-label">GitHub</span>
+                    <span class="contact-value">github.com/fadhel028</span>
+                </a>
+
+                <a href="https://linkedin.com/in/mouhamed-fadel-thiam-6402b2386" target="_blank" rel="noopener" class="contact-card">
+                    <span class="contact-label">LinkedIn</span>
+                    <span class="contact-value">Mouhamed Fadel Thiam</span>
+                </a>
+
+                <a href="https://drive.google.com/file/d/1X7X7X7X7X7X7X7X7X7X7X7X7X7X7X7X/view?usp=sharing" target="_blank" rel="noopener" class="contact-card">
+                    <span class="contact-label">Curriculum Vitae</span>
+                    <span class="contact-value">Télécharger le PDF</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Fadel Thiam</p>
+        <p>IUT de Villetaneuse — USPN</p>
+    </footer>
 </div>
-
-<section id="about">
-    <h2>À propos</h2>
-    <p>
-        Je suis étudiant en <abbr class="initialism" title="Bachelor universitaire de technologie">BUT</abbr> Informatique à l'<abbr class="initialism" title="Institut universitaire de technologie">IUT</abbr> de Villetaneuse de l'Université Sorbonne Paris Nord. Passionné par le développement web,
-        je réalise des projets personnels et académiques (<abbr class="initialism" title="Situation d'Apprentissage et d'Évaluation">SAÉ</abbr>) pour approfondir mes compétences en programmation, gestion de bases de données et développement d'applications. 
-        <br><br>
-        Je suis actuellement à la recherche d'un **contrat d'apprentissage (2 ans)** avec un rythme de 2 semaines en formation / 2 semaines en entreprise.
-        <br><br>
-        J'ai des bases solides en <span class="tag">HTML</span>, <span class="tag">CSS</span>, <span class="tag">JavaScript</span>, <span class="tag">Python</span>, <span class="tag">Java</span>, <span class="tag">C</span>, <span class="tag">SQL</span>, <span class="tag">Assembleur</span> et je suis toujours enthousiaste à l'idée d'apprendre de nouvelles technologies.
-    </p>
-</section>
-
-<section id="projects">
-    <h2>Mes Projets</h2>
-
-    <div class="projects">
-        <div class="card">
-            <div>
-                <span class="card-badge">Binôme</span>
-                <h3 style="margin-top: 0.5rem;">Le choixpeau pas Magique de Poudlard</h3>
-            </div>
-            <button onclick="location.href='s101.html'">Voir plus <span>→</span></button>
-        </div>
-
-        <div class="card">
-            <div>
-                <span class="card-badge">Binôme</span>
-                <h3 style="margin-top: 0.5rem;">Le nouveau choixpeau pas Magique (Suite)</h3>
-            </div>
-            <button onclick="location.href='s102.html'">Voir plus <span>→</span></button>
-        </div>
-
-        <div class="card">
-            <div>
-                <span class="card-badge">Individuel</span>
-                <h3 style="margin-top: 0.5rem;">Installation poste de développement</h3>
-            </div>
-            <button onclick="location.href='s103.html'">Voir plus <span>→</span></button>
-        </div>
-
-        <div class="card">
-            <div>
-                <span class="card-badge">Individuel</span>
-                <h3 style="margin-top: 0.5rem;">Création d'une base de données</h3>
-            </div>
-            <button onclick="location.href='s104.html'">Voir plus <span>→</span></button>
-        </div>
-
-        <div class="card">
-            <div>
-                <span class="card-badge">Groupe de 6</span>
-                <h3 style="margin-top: 0.5rem;">Recueil de besoins client</h3>
-            </div>
-            <button onclick="location.href='s105.html'">Voir plus <span>→</span></button>
-        </div>
-
-        <div class="card">
-            <div>
-                <span class="card-badge">Groupe de 4</span>
-                <h3 style="margin-top: 0.5rem;">Environnement économique & écologique</h3>
-            </div>
-            <button onclick="location.href='s106.html'">Voir plus <span>→</span></button>
-        </div>
-
-        <div class="card">
-            <div>
-                <span class="card-badge">Individuel</span>
-                <h3 style="margin-top: 0.5rem;">Exploration algorithmique d'un problème</h3>
-            </div>
-            <button onclick="location.href='s202.html'">Voir plus <span>→</span></button>
-        </div>
-    </div>
-</section>
-
-<section id="contact">
-    <h2>Contact</h2>
-    <div class="contact-list">
-        <div class="contact-item">✉️ Email : <a href="mailto:thiamfadel028@gmail.com">thiamfadel028@gmail.com</a></div>
-        <div class="contact-item">🐙 GitHub : <a href="https://github.com/FADHEL028" target="_blank" rel="noopener">github.com/fadhel028</a></div>
-        <div class="contact-item">💼 LinkedIn : <a href="https://linkedin.com/in/mouhamed-fadel-thiam-6402b2386" target="_blank" rel="noopener">Mouhamed Fadel Thiam</a></div>
-        <div class="contact-item">📄 CV : <a href="https://drive.google.com/file/d/1X7X7X7X7X7X7X7X7X7X7X7X7X7X7X7X/view?usp=sharing" target="_blank" rel="noopener">Consulter / Télécharger</a></div>
-    </div>
-</section>
-
-<footer>
-    <p>© 2026 - Fadel THIAM</p>
-    <p style="font-size: 0.7rem; opacity: 0.6;">IUT de Villetaneuse</p>
-</footer>
 
 <script>
   const modeButton = document.getElementById('mode');
-  const modeText = document.getElementById('mode-text');
-  const modeIcon = document.getElementById('mode-icon');
 
-  // Applique le thème sauvegardé si disponible
+  // Maintien du thème choisi par l'utilisateur
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     document.body.classList.add('light');
-    modeText.textContent = 'Mode Sombre';
-    modeIcon.textContent = '🌙';
+    modeButton.textContent = 'Mode Sombre';
   }
 
   modeButton.addEventListener('click', () => {
     const isLight = document.body.classList.toggle('light');
-    
-    if (isLight) {
-      modeText.textContent = 'Mode Sombre';
-      modeIcon.textContent = '🌙';
-      localStorage.setItem('theme', 'light');
-    } else {
-      modeText.textContent = 'Mode Clair';
-      modeIcon.textContent = '☀️';
-      localStorage.setItem('theme', 'dark');
-    }
+    modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
   });
 </script>
 
