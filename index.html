@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Portfolio</title>
+    <title>Fadel THIAM - Portfolio</title>
 
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -16,7 +16,7 @@
   --surface:   #111827;
   --surface2:  #1a2236;
   --text:      #e8eaf0;
-  --muted:     #64748b;
+  --muted:     #8892b0;
   --border:    #1e2d45;
   --accent:    #3498db;
   --accent-rgb: 52, 152, 219;
@@ -43,7 +43,7 @@ body {
   color: var(--text);
   font-family: var(--font-head);
   line-height: 1.7;
-  transition: background 0.3s, color 0.3s;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* =====================
@@ -71,7 +71,7 @@ header h1::after {
 
 header p {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--accent);
   margin-top: 0.75rem;
   letter-spacing: 0.04em;
@@ -88,11 +88,17 @@ nav {
   margin: 0 auto;
   align-items: center;
   border-bottom: 0.5px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  transition: background 0.3s ease;
 }
 
 nav a {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: var(--muted);
   text-decoration: none;
   letter-spacing: 0.05em;
@@ -109,13 +115,13 @@ nav a::after {
   width: 0;
   height: 1px;
   background: var(--accent);
-  transition: width 0.25s;
+  transition: width 0.25s ease;
 }
 
 nav a:hover { color: var(--accent); }
 nav a:hover::after { width: 100%; }
 
-/* Bouton mode clair/sombre — séparé du nav */
+/* Bouton mode clair/sombre */
 div:has(#mode) {
   max-width: 860px;
   margin: 0 auto;
@@ -130,16 +136,20 @@ div:has(#mode) {
   padding: 6px 14px;
   border-radius: var(--radius);
   border: 0.5px solid var(--border);
-  background: transparent;
+  background: var(--surface);
   color: var(--muted);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 #mode:hover {
   border-color: var(--accent);
   color: var(--accent);
+  transform: translateY(-1px);
 }
 
 /* =====================
@@ -159,15 +169,26 @@ section h2 {
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  opacity: 0.5;
 }
 
 /* =====================
    SECTION À PROPOS
    ===================== */
 #about p {
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: var(--muted);
-  max-width: 680px;
+  max-width: 720px;
   line-height: 1.85;
 }
 
@@ -182,8 +203,8 @@ abbr.initialism {
    ===================== */
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.25rem;
 }
 
 .card {
@@ -193,66 +214,93 @@ abbr.initialism {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  transition: border-color 0.2s, transform 0.2s;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
   border-color: rgba(var(--accent-rgb), 0.4);
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.3);
 }
 
 .card h3 {
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 500;
   color: var(--text);
   line-height: 1.4;
 }
 
-.card p {
+.card-badge {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--muted);
-  flex: 1;
+  background: var(--surface2);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  align-self: flex-start;
 }
 
 .card button {
   align-self: flex-start;
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: calc(var(--radius) / 2);
-  background: rgba(var(--accent-rgb), 0.1);
+  background: rgba(var(--accent-rgb), 0.08);
   color: var(--accent);
-  border: 0.5px solid rgba(var(--accent-rgb), 0.3);
+  border: 0.5px solid rgba(var(--accent-rgb), 0.25);
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .card button:hover {
-  background: rgba(var(--accent-rgb), 0.2);
+  background: var(--accent);
+  color: #fff;
   border-color: var(--accent);
+}
+
+.card button span {
+  transition: transform 0.2s ease;
+}
+
+.card button:hover span {
+  transform: translateX(3px);
 }
 
 /* =====================
    SECTION CONTACT
    ===================== */
-#contact p {
-  font-size: 0.9rem;
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-item {
+  font-size: 0.92rem;
   color: var(--muted);
-  margin-bottom: 0.6rem;
   font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-#contact a {
-  color: var(--accent);
+.contact-item a {
+  color: var(--text);
   text-decoration: none;
-  border-bottom: 0.5px solid rgba(var(--accent-rgb), 0.3);
-  transition: border-color 0.2s;
+  border-bottom: 1px dotted rgba(var(--accent-rgb), 0.5);
+  transition: color 0.2s, border-color 0.2s;
 }
 
-#contact a:hover {
-  border-bottom-color: var(--accent);
+.contact-item a:hover {
+  color: var(--accent);
+  border-bottom-style: solid;
 }
 
 /* =====================
@@ -261,7 +309,10 @@ abbr.initialism {
 footer {
   max-width: 860px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 footer p {
@@ -277,33 +328,13 @@ footer p {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 4px;
   background: rgba(var(--accent-rgb), 0.1);
   color: var(--accent);
   border: 0.5px solid rgba(var(--accent-rgb), 0.25);
-  margin: 3px 2px;
+  margin: 2px 1px;
 }
-
-.btn {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  padding: 10px 24px;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--bg);
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.btn:hover { opacity: 0.85; }
-
-.accent { color: var(--accent); }
-.muted  { color: var(--muted); }
 
 /* =====================
    RESPONSIVE
@@ -317,7 +348,6 @@ footer p {
   .projects { grid-template-columns: 1fr; }
 }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -332,14 +362,22 @@ footer p {
     <a href="#projects">Projets</a>
     <a href="#contact">Contact</a>
 </nav>
-<div><button id="mode">Mode Clair</button></div>
+
+<div>
+    <button id="mode">
+        <span id="mode-icon">☀️</span> <span id="mode-text">Mode Clair</span>
+    </button>
+</div>
+
 <section id="about">
     <h2>À propos</h2>
     <p>
         Je suis étudiant en <abbr class="initialism" title="Bachelor universitaire de technologie">BUT</abbr> Informatique à l'<abbr class="initialism" title="Institut universitaire de technologie">IUT</abbr> de Villetaneuse de l'Université Sorbonne Paris Nord. Passionné par le développement web,
         je réalise des projets personnels et académiques (<abbr class="initialism" title="Situation d'Apprentissage et d'Évaluation">SAÉ</abbr>) pour approfondir mes compétences en programmation, gestion de bases de données et développement d'applications. 
-        Je suis à la recherche d'un contrat d'apprentissage pour une durée de deux ans avec un rythme deux semaines en formation, deux semaines en entreprise dans le but d'approfondir mes compétences et contribuer à des projets innovants.
-        J'ai des bases solides en <span class="tag">HTML</span>, <span class="tag">CSS</span>, <span class="tag">JavaScript</span>, <span class="tag">Python</span>, <span class="tag">Java</span>, <span class="tag">C</span>, <span class="tag">SQL</span>, <span class="tag">Langage assembleur </span>et je suis toujours avide d'apprendre de nouvelles technologies et de relever des défis techniques.
+        <br><br>
+        Je suis actuellement à la recherche d'un **contrat d'apprentissage (2 ans)** avec un rythme de 2 semaines en formation / 2 semaines en entreprise.
+        <br><br>
+        J'ai des bases solides en <span class="tag">HTML</span>, <span class="tag">CSS</span>, <span class="tag">JavaScript</span>, <span class="tag">Python</span>, <span class="tag">Java</span>, <span class="tag">C</span>, <span class="tag">SQL</span>, <span class="tag">Assembleur</span> et je suis toujours enthousiaste à l'idée d'apprendre de nouvelles technologies.
     </p>
 </section>
 
@@ -347,93 +385,106 @@ footer p {
     <h2>Mes Projets</h2>
 
     <div class="projects">
-        <!-- Projet 1 -->
         <div class="card">
-            <h3>Le choixpeau pas Magique de Poudlard</h3>
-            <p>Travail en binôme</p>
-            <button class="btn" onclick="location.href='s101.html'">Voir plus</button>
+            <div>
+                <span class="card-badge">Binôme</span>
+                <h3 style="margin-top: 0.5rem;">Le choixpeau pas Magique de Poudlard</h3>
+            </div>
+            <button onclick="location.href='s101.html'">Voir plus <span>→</span></button>
         </div>
 
-        <!-- Projet 2 -->
         <div class="card">
-            <h3>Le nouveau choixpeau pas Magique de Poudlard</h3>
-            <p>Travail en binôme suite de la saé S1.01</p>
-            <button class="btn" onclick="location.href='s102.html'">Voir plus</button>
+            <div>
+                <span class="card-badge">Binôme</span>
+                <h3 style="margin-top: 0.5rem;">Le nouveau choixpeau pas Magique (Suite)</h3>
+            </div>
+            <button onclick="location.href='s102.html'">Voir plus <span>→</span></button>
         </div>
-        <!-- Projet 3-->
+
         <div class="card">
-            <h3>Installation poste de développement</h3>
-            <p>Travail individuel</p>
-            <button class="btn" onclick="location.href='s103.html'" >Voir plus</button>
+            <div>
+                <span class="card-badge">Individuel</span>
+                <h3 style="margin-top: 0.5rem;">Installation poste de développement</h3>
+            </div>
+            <button onclick="location.href='s103.html'">Voir plus <span>→</span></button>
         </div>
-        <!--  Projet 4 -->
+
         <div class="card">
-            <h3>Création d'une base de données</h3>
-            <p>Travail individuel</p>
-            <button class="btn" onclick="location.href='s104.html'">Voir plus</button>
+            <div>
+                <span class="card-badge">Individuel</span>
+                <h3 style="margin-top: 0.5rem;">Création d'une base de données</h3>
+            </div>
+            <button onclick="location.href='s104.html'">Voir plus <span>→</span></button>
         </div>
-        <!-- Projet 5 -->
+
         <div class="card">
-            <h3>Recueil de besoins</h3>
-            <p>Travail en groupe de 6</p>
-            <button class="btn" onclick="location.href='s105.html'">Voir plus</button>
+            <div>
+                <span class="card-badge">Groupe de 6</span>
+                <h3 style="margin-top: 0.5rem;">Recueil de besoins client</h3>
+            </div>
+            <button onclick="location.href='s105.html'">Voir plus <span>→</span></button>
         </div>
-        <!-- Projet 6 -->
+
         <div class="card">
-            <h3>Découverte de l'environnement économique et écologique</h3>
-            <p>Travail en groupe de 4</p>
-            <button class="btn" onclick="location.href='s106.html'">Voir plus</button>
+            <div>
+                <span class="card-badge">Groupe de 4</span>
+                <h3 style="margin-top: 0.5rem;">Environnement économique & écologique</h3>
+            </div>
+            <button onclick="location.href='s106.html'">Voir plus <span>→</span></button>
         </div>
-        <!-- Projet -->
+
         <div class="card">
-            <h3>Exploration algorithmique d'un problème</h3>
-            <p>Travail individuel</p>
-            <button class="btn" onclick="location.href='s202.html'" >Voir plus</button>
+            <div>
+                <span class="card-badge">Individuel</span>
+                <h3 style="margin-top: 0.5rem;">Exploration algorithmique d'un problème</h3>
+            </div>
+            <button onclick="location.href='s202.html'">Voir plus <span>→</span></button>
         </div>
-        <!-- Ajoute jusqu’à 12 projets -->
     </div>
 </section>
 
 <section id="contact">
     <h2>Contact</h2>
-    <p>Email :<a href="mailto:thiamfadel028@gmail.com"> thiamfadel028@gmail.com</a></p>
-    <p>GitHub : <a href="https://github.com/FADHEL028">github.com/fadhel028</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/mouhamed-fadel-thiam-6402b2386">Mouhamed Fadel Thiam</a></p>
+    <div class="contact-list">
+        <div class="contact-item">✉️ Email : <a href="mailto:thiamfadel028@gmail.com">thiamfadel028@gmail.com</a></div>
+        <div class="contact-item">🐙 GitHub : <a href="https://github.com/FADHEL028" target="_blank" rel="noopener">github.com/fadhel028</a></div>
+        <div class="contact-item">💼 LinkedIn : <a href="https://linkedin.com/in/mouhamed-fadel-thiam-6402b2386" target="_blank" rel="noopener">Mouhamed Fadel Thiam</a></div>
+        <div class="contact-item">📄 CV : <a href="https://drive.google.com/file/d/1X7X7X7X7X7X7X7X7X7X7X7X7X7X7X7X/view?usp=sharing" target="_blank" rel="noopener">Consulter / Télécharger</a></div>
+    </div>
 </section>
 
 <footer>
     <p>© 2026 - Fadel THIAM</p>
+    <p style="font-size: 0.7rem; opacity: 0.6;">IUT de Villetaneuse</p>
 </footer>
+
 <script>
-    let modeButton = document.getElementById('mode');
-    modeButton.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if(document.body.classList.contains('light-mode')) {
-            modeButton.textContent = 'Mode Sombre';
-            document.body.style.background = '#f8fafc'; 
-            document.body.style.color = '#0f172a';
-            document.querySelector('header').style.background = '#ffffff';
-            document.querySelector('header h1').style.color = '#0f172a';
-            document.querySelector('nav').style.background = '#f1f5f9';
-            $('.initialism').css('color' , '#0f172a');
-            $('.card').css('background', '#ffffff');
-            $('h3').css('color', '#0f172a')
-            document.querySelector('footer').style.background = '#f1f5f9';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        } else {
-            modeButton.textContent = 'Mode Clair';
-            document.body.style.background = '#0a0f1e';
-            document.body.style.color = '#e8eaf0';
-            document.querySelector('header').style.background = '#111827';
-            document.querySelector('header h1').style.color = '#e8eaf0';
-            document.querySelector('nav').style.background = '#1a2236';  
-            $('.initialism').css('color' , '#e8eaf0');
-            $('.card').css('background', '#111827');
-            $('h3').css('color', 'white')
-            document.querySelector('footer').style.background = '#1a2236';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        }
-    });
+  const modeButton = document.getElementById('mode');
+  const modeText = document.getElementById('mode-text');
+  const modeIcon = document.getElementById('mode-icon');
+
+  // Applique le thème sauvegardé si disponible
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    modeText.textContent = 'Mode Sombre';
+    modeIcon.textContent = '🌙';
+  }
+
+  modeButton.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    
+    if (isLight) {
+      modeText.textContent = 'Mode Sombre';
+      modeIcon.textContent = '🌙';
+      localStorage.setItem('theme', 'light');
+    } else {
+      modeText.textContent = 'Mode Clair';
+      modeIcon.textContent = '☀️';
+      localStorage.setItem('theme', 'dark');
+    }
+  });
 </script>
+
 </body>
 </html>
