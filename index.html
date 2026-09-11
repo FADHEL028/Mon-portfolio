@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fadel THIAM — Développeur Software</title>
+    <title>Fadel THIAM — Portfolio Développeur</title>
 
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* =====================
-   VARIABLES & RESET
+   VARIABLES & THEMES
    ===================== */
 :root {
-  --bg:          #0b0f19;
-  --surface:     #111827;
-  --surface-hover:#1f293d;
-  --text:        #f3f4f6;
-  --muted:       #9ca3af;
-  --border:      #1f2937;
-  --accent:      #38bdf8;
-  --accent-soft: rgba(56, 189, 248, 0.1);
-  --radius:      8px;
-  --font-sans:   'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono:   'JetBrains Mono', monospace;
+  --bg:           #080c14;
+  --surface:      rgba(15, 23, 42, 0.65);
+  --surface-hover:rgba(30, 41, 59, 0.8);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.4);
+  
+  --text:         #f8fafc;
+  --muted:        #94a3b8;
+  
+  --accent:       #38bdf8;
+  --accent-glow:  rgba(56, 189, 248, 0.15);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  
+  --radius:       12px;
+  --font-sans:    'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
 }
 
 body.light {
-  --bg:          #f8fafc;
-  --surface:     #ffffff;
-  --surface-hover:#f1f5f9;
-  --text:        #0f172a;
-  --muted:       #475569;
-  --border:      #e2e8f0;
-  --accent:      #0284c7;
-  --accent-soft: rgba(2, 132, 199, 0.08);
+  --bg:           #f1f5f9;
+  --surface:      rgba(255, 255, 255, 0.85);
+  --surface-hover:rgba(255, 255, 255, 1);
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(2, 132, 199, 0.4);
+  
+  --text:         #0f172a;
+  --muted:        #475569;
+  
+  --accent:       #0284c7;
+  --accent-glow:  rgba(2, 132, 199, 0.08);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,40 +54,49 @@ body {
   color: var(--text);
   font-family: var(--font-sans);
   line-height: 1.6;
-  transition: background 0.25s ease, color 0.25s ease;
-  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  /* Arrière-plan subtil avec gradient */
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--accent-glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
 }
 
-/* Accessibilité : Focus clavier clair */
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 /* =====================
-   CONTAINER & NAV
+   LAYOUT
    ===================== */
 .container {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
+/* =====================
+   NAVBAR
+   ===================== */
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
   position: sticky;
   top: 0;
   background: var(--bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 100;
+  border-bottom: 1px solid var(--border);
 }
 
 .nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
 nav a {
@@ -86,68 +104,94 @@ nav a {
   font-size: 0.85rem;
   color: var(--muted);
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.2s;
 }
 
 nav a:hover, nav a:focus-visible {
-  color: var(--accent);
+  color: var(--text);
 }
 
 #mode {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
+  backdrop-filter: blur(8px);
   transition: all 0.2s ease;
 }
 
 #mode:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--border-hover);
+  box-shadow: 0 0 15px var(--accent-glow);
 }
 
 /* =====================
-   HEADER
+   HEADER & BENTO GRID
    ===================== */
 header {
   padding: 4rem 0 3rem;
   border-bottom: 1px solid var(--border);
 }
 
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  margin-bottom: 1.25rem;
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 header h1 {
-  font-size: clamp(2.2rem, 5vw, 3.2rem);
-  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
+  margin-bottom: 0.5rem;
 }
 
-header p {
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
+header .subtitle {
+  font-size: 1.15rem;
   color: var(--muted);
-  margin-top: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.bento-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.bento-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+}
+
+.bento-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.bento-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 /* =====================
-   SECTIONS COMMUNES
+   SECTIONS
    ===================== */
 section {
   padding: 3.5rem 0;
@@ -155,47 +199,58 @@ section {
 }
 
 section h2 {
-  font-size: 0.8rem;
   font-family: var(--font-mono);
-  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
 /* =====================
    SECTION À PROPOS
    ===================== */
 #about p {
-  font-size: 1rem;
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+#about p strong {
   color: var(--text);
-  line-height: 1.75;
 }
 
-.about-highlight {
-  margin-top: 1.25rem;
-  padding: 1rem;
-  background: var(--surface);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 0.95rem;
-}
-
-.tags-container {
-  margin-top: 1.5rem;
+.tags-wrapper {
+  margin-top: 1.75rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .tag {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 3px 8px;
-  border-radius: 4px;
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 6px;
   background: var(--surface);
-  color: var(--text);
   border: 1px solid var(--border);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
 }
 
 /* =====================
@@ -203,54 +258,66 @@ section h2 {
    ===================== */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
 }
 
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
   border-radius: var(--radius);
-  padding: 1.25rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .card:hover, .card:focus-visible {
-  border-color: var(--accent);
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
   background: var(--surface-hover);
+  box-shadow: 0 12px 30px -10px var(--accent-glow);
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.75rem;
-}
-
-.card-type {
+.card-badge {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--muted);
-  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+  border: 1px solid rgba(56, 189, 248, 0.2);
 }
 
 .card h3 {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   line-height: 1.4;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.card-link {
+.card-action {
   font-family: var(--font-mono);
   font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s;
+}
+
+.card:hover .card-action {
   color: var(--accent);
-  font-weight: 500;
 }
 
 /* =====================
@@ -258,22 +325,25 @@ section h2 {
    ===================== */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
 }
 
 .contact-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 1rem;
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
   border-radius: var(--radius);
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s;
+  transition: all 0.25s ease;
 }
 
 .contact-card:hover, .contact-card:focus-visible {
-  border-color: var(--accent);
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: 0 8px 20px -5px var(--accent-glow);
 }
 
 .contact-label {
@@ -284,10 +354,10 @@ section h2 {
 }
 
 .contact-value {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text);
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
   word-break: break-all;
 }
 
@@ -295,18 +365,18 @@ section h2 {
    FOOTER
    ===================== */
 footer {
-  padding: 2.5rem 0;
+  padding: 3rem 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--muted);
 }
 
-@media (max-width: 600px) {
-  header h1 { font-size: 2rem; }
-  .projects-grid, .contact-grid { grid-template-columns: 1fr; }
-  footer { flex-direction: column; gap: 0.5rem; }
+@media (max-width: 640px) {
+  .projects-grid, .contact-grid, .bento-info { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
 }
     </style>
 </head>
@@ -324,130 +394,127 @@ footer {
     </nav>
 
     <header>
-        <div class="status-badge">Recherche d'apprentissage (2 ans)</div>
-        <h1>Fadel Thiam</h1>
-        <p>Étudiant en BUT Informatique & Développeur Software</p>
+        <h1><span class="title-gradient">Fadel Thiam</span></h1>
+        <p class="subtitle">Étudiant en BUT Informatique & Développeur Software</p>
+
+        <div class="bento-info">
+            <div class="bento-item">
+                <span class="bento-label">Objectif</span>
+                <span class="bento-value">Apprentissage (2 ans)</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Rythme</span>
+                <span class="bento-value">2 semaines / 2 semaines</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Établissement</span>
+                <span class="bento-value">IUT de Villetaneuse</span>
+            </div>
+        </div>
     </header>
 
     <main>
         <section id="about" aria-labelledby="heading-about">
             <h2 id="heading-about">À propos</h2>
             <p>
-                Étudiant en BUT Informatique à l'IUT de Villetaneuse (Université Sorbonne Paris Nord), je me passionne pour le développement d'applications et la conception d'architectures logicielles.
+                Passionné par la conception logicielle et l'architecture web, je prépare mon diplôme en <strong>BUT Informatique</strong> à l'Université Sorbonne Paris Nord. Je cherche à mettre mes compétences théoriques et pratiques au service d'une équipe technique dynamique dans le cadre d'un contrat d'apprentissage.
             </p>
-            
-            <div class="about-highlight">
-                <strong>Recherche de rythme :</strong> 2 semaines en formation / 2 semaines en entreprise à partir de la rentrée pour approfondir mes compétences sur des projets réels.
-            </div>
 
-            <div class="tags-container" aria-label="Technologies maîtrisées">
-                <span class="tag">HTML/CSS</span>
+            <div class="tags-wrapper" aria-label="Technologies pratiquées">
+                <span class="tag">HTML5 / CSS3</span>
                 <span class="tag">JavaScript</span>
                 <span class="tag">Python</span>
                 <span class="tag">Java</span>
-                <span class="tag">C</span>
+                <span class="tag">Langage C</span>
                 <span class="tag">SQL</span>
                 <span class="tag">Assembleur</span>
             </div>
         </section>
 
         <section id="projects" aria-labelledby="heading-projects">
-            <h2 id="heading-projects">Projets académiques & personnels</h2>
+            <h2 id="heading-projects">Projets académiques & réalisations</h2>
 
             <div class="projects-grid">
                 <a href="s101.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S1.01 — Binôme</span>
-                        </div>
+                        <span class="card-badge">SAÉ S1.01 — Binôme</span>
                         <h3>Le Choixpeau pas Magique de Poudlard</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
 
                 <a href="s102.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S1.02 — Binôme</span>
-                        </div>
+                        <span class="card-badge">SAÉ S1.02 — Binôme</span>
                         <h3>Le Choixpeau pas Magique (Partie 2)</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
 
                 <a href="s103.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S1.03 — Individuel</span>
-                        </div>
+                        <span class="card-badge">SAÉ S1.03 — Individuel</span>
                         <h3>Installation poste de développement</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
 
                 <a href="s104.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S1.04 — Individuel</span>
-                        </div>
+                        <span class="card-badge">SAÉ S1.04 — Individuel</span>
                         <h3>Création & gestion de bases de données</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
 
                 <a href="s105.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S1.05 — Groupe (6)</span>
-                        </div>
+                        <span class="card-badge">SAÉ S1.05 — Groupe (6)</span>
                         <h3>Recueil de besoins client</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
 
                 <a href="s106.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S1.06 — Groupe (4)</span>
-                        </div>
-                        <h3>Découverte environnement éco & écolo</h3>
+                        <span class="card-badge">SAÉ S1.06 — Groupe (4)</span>
+                        <h3>Environnement économique & écologique</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
 
                 <a href="s202.html" class="card">
                     <div>
-                        <div class="card-header">
-                            <span class="card-type">SAÉ S2.02 — Individuel</span>
-                        </div>
+                        <span class="card-badge">SAÉ S2.02 — Individuel</span>
                         <h3>Exploration algorithmique d'un problème</h3>
                     </div>
-                    <span class="card-link">Consulter le projet</span>
+                    <span class="card-action">Découvrir le projet</span>
                 </a>
             </div>
         </section>
 
         <section id="contact" aria-labelledby="heading-contact">
-            <h2 id="heading-contact">Contact & Liens</h2>
+            <h2 id="heading-contact">Me contacter</h2>
+            
             <div class="contact-grid">
                 <a href="mailto:thiamfadel028@gmail.com" class="contact-card">
-                    <span class="contact-label">Email</span>
+                    <span class="contact-label">Email direct</span>
                     <span class="contact-value">thiamfadel028@gmail.com</span>
                 </a>
 
                 <a href="https://github.com/FADHEL028" target="_blank" rel="noopener" class="contact-card">
-                    <span class="contact-label">GitHub</span>
+                    <span class="contact-label">Code source</span>
                     <span class="contact-value">github.com/fadhel028</span>
                 </a>
 
                 <a href="https://linkedin.com/in/mouhamed-fadel-thiam-6402b2386" target="_blank" rel="noopener" class="contact-card">
-                    <span class="contact-label">LinkedIn</span>
+                    <span class="contact-label">Réseau professionnel</span>
                     <span class="contact-value">Mouhamed Fadel Thiam</span>
                 </a>
 
                 <a href="https://drive.google.com/file/d/1X7X7X7X7X7X7X7X7X7X7X7X7X7X7X7X/view?usp=sharing" target="_blank" rel="noopener" class="contact-card">
-                    <span class="contact-label">Curriculum Vitae</span>
-                    <span class="contact-value">Télécharger le PDF</span>
+                    <span class="contact-label">Document</span>
+                    <span class="contact-value">Consulter mon CV</span>
                 </a>
             </div>
         </section>
@@ -462,7 +529,6 @@ footer {
 <script>
   const modeButton = document.getElementById('mode');
 
-  // Maintien du thème choisi par l'utilisateur
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     document.body.classList.add('light');
