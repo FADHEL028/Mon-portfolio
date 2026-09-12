@@ -93,20 +93,22 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 
-.back-link {
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+}
+
+nav a {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   color: var(--muted);
   text-decoration: none;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   transition: color 0.2s;
 }
 
-.back-link:hover, .back-link:focus-visible {
-  color: var(--accent);
+nav a:hover, nav a:focus-visible {
+  color: var(--text);
 }
 
 #mode {
@@ -203,7 +205,7 @@ header .subtitle {
    SECTIONS & CONTENT
    ===================== */
 section {
-  padding: 3rem 0;
+  padding: 3.5rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -213,7 +215,7 @@ section h2 {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -226,24 +228,31 @@ section h2::after {
   background: var(--border);
 }
 
-section p, section ul {
+p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+p strong {
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ul li {
   font-size: 1rem;
   color: var(--muted);
-  line-height: 1.7;
-}
-
-section ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-section ul li {
   position: relative;
   padding-left: 1.5rem;
-  margin-bottom: 0.6rem;
 }
 
-section ul li::before {
+ul li::before {
   content: '→';
   position: absolute;
   left: 0;
@@ -252,7 +261,7 @@ section ul li::before {
 }
 
 /* =====================
-   CODE BLOCK & ACTION
+   CODE BLOCK
    ===================== */
 .code-container {
   background: var(--surface);
@@ -316,43 +325,27 @@ pre {
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text);
-  transition: all 0.2s ease;
 }
 
-.tag:hover {
-  border-color: var(--border-hover);
-  background: var(--surface-hover);
-}
-
-.btn-container {
-  padding: 3rem 0;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.btn {
+.btn-back {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  font-weight: 600;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
   text-decoration: none;
-  transition: all 0.25s ease;
-  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.btn:hover {
+.btn-back:hover {
   border-color: var(--border-hover);
   background: var(--surface-hover);
-  color: var(--accent);
-  box-shadow: 0 8px 20px -5px var(--accent-glow);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--accent-glow);
 }
 
 /* =====================
@@ -379,14 +372,18 @@ footer {
 
 <div class="container">
     <nav aria-label="Navigation principale">
-        <a href="index.html" class="back-link">← Retour aux projets</a>
+        <div class="nav-links">
+            <a href="index.html">← Accueil</a>
+            <a href="index.html#projects">Projets</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
         <button id="mode" aria-label="Changer le thème">Mode Clair</button>
     </nav>
 
     <header>
-        <span class="project-badge">SAÉ S1.01 — Binôme</span>
+        <span class="project-badge">SAÉ S1.01 — Travail en binôme</span>
         <h1><span class="title-gradient">Le Choixpeau pas Magique</span></h1>
-        <p class="subtitle">Développement d’un algorithme de répartition algorithmique</p>
+        <p class="subtitle">Développement d’un algorithme de répartition déterministe</p>
 
         <div class="bento-info">
             <div class="bento-item">
@@ -394,47 +391,45 @@ footer {
                 <span class="bento-value">Python 3</span>
             </div>
             <div class="bento-item">
-                <span class="bento-label">Fichier principal</span>
+                <span class="bento-label">Script principal</span>
                 <span class="bento-value">s101.py</span>
             </div>
             <div class="bento-item">
-                <span class="bento-label">Modalité</span>
-                <span class="bento-value">Travail en Binôme</span>
+                <span class="bento-label">Domaine</span>
+                <span class="bento-value">Algorithmique & Structure de données</span>
             </div>
         </div>
     </header>
 
     <main>
-        <section>
+        <section id="contexte">
             <h2>Contexte</h2>
             <p>
-                Cette SAÉ consiste à concevoir un programme capable de répartir automatiquement
-                des élèves dans différentes catégories à partir d’un questionnaire.
-                Le projet s’inspire d’un système de décision basé sur des critères bien définis.
+                Cette SAÉ consiste à concevoir un programme capable de répartir automatiquement des élèves dans différentes maisons à partir d’un questionnaire. Le projet s’inspire d’un système de décision basé sur des critères mathématiques et algorithmiques bien définis.
             </p>
         </section>
 
-        <section>
+        <section id="objectifs">
             <h2>Objectifs</h2>
             <ul>
                 <li>Respecter un cahier des charges fonctionnel et rigoureux</li>
-                <li>Développement du script principal <code style="font-family: var(--font-mono); color: var(--accent);">s101.py</code></li>
-                <li>Implémenter une logique de décision déterministe</li>
-                <li>Tester et valider formellement les résultats produits</li>
+                <li>Développer le script principal <code>s101.py</code> de manière structurée</li>
+                <li>Implémenter une logique de décision déterministe basée sur des scores</li>
+                <li>Tester et valider formellement les résultats produits à l'aide de jeux d'essais</li>
             </ul>
         </section>
 
-        <section>
+        <section id="code">
             <h2>Script Python (s101.py)</h2>
             <p style="margin-bottom: 1rem;">
-                Le cœur du projet réside dans le fichier <strong><code>s101.py</code></strong>. Il contient la logique d'acquisition des données, les fonctions d'évaluation ainsi que l'algorithme d’affectation aux différentes maisons/catégories.
+                Le cœur du projet réside dans le fichier <strong><code>s101.py</code></strong>. Il contient la logique de lecture des données, les fonctions d'évaluation ainsi que l'algorithme d’affectation.
             </p>
             <div class="code-container">
                 <div class="code-header">
                     <span>s101.py</span>
-                    <a href="s101.py" download class="download-link"> Télécharger le fichier .py</a>
+                    <a href="s101.py" download class="download-link">Télécharger le fichier .py</a>
                 </div>
-                <pre><code># Code de la SAE S101 (uniquement les définitions de fonction)
+                <pre><code># Code de la SAÉ S1.01 (uniquement les définitions de fonctions)
 
 def nombre_eleves(reponses):
     return len(reponses) / 5
@@ -478,7 +473,7 @@ def maison(reponses, indice):
         if reponses[indice + 1 + j] > reponses[indice + 1 + ind_score_max]:
             ind_score_max = j
         j += 1
-    #ind_score max est un nombre entre 0 et 4 correspondant à la question où l'élève a mis le score maximum
+    # ind_score_max est un nombre entre 0 et 3 correspondant à la question où l'élève a mis le score maximum
     m = ["Gryffondor", "Serdaigle", "Poufsouffle", "Serpentard"]
     return m[ind_score_max]
 
@@ -491,7 +486,6 @@ def repartition(reponses):
     return aff
 
 def nb_erreurs(d1, d2):
-
     nb_erreurs = 0
     
     # Parcours de la liste des élèves
@@ -505,68 +499,50 @@ def nb_erreurs(d1, d2):
             </div>
         </section>
 
-        <section>
+        <section id="fonctionnement">
             <h2>Principe de fonctionnement</h2>
             <p style="margin-bottom: 1rem;">
-                Le programme repose sur un questionnaire comportant 4 questions clés. Chaque réponse est évaluée avec un score compris entre 1 et 10. L’élève est ensuite affecté à une catégorie en fonction de son score prédominant.
+                Le programme repose sur un questionnaire comportant 4 thématiques clés. Chaque réponse est évaluée par une note. L’élève est ensuite affecté à une maison selon la dominance de son profil :
             </p>
             <ul>
-                <li>Question 1 → Profil orienté action</li>
-                <li>Question 2 → Profil intellectuel</li>
-                <li>Question 3 → Profil social</li>
-                <li>Question 4 → Profil ambitieux</li>
+                <li>Profil 1 → Orienté action et courage (Gryffondor)</li>
+                <li>Profil 2 → Orienté érudition et logique (Serdaigle)</li>
+                <li>Profil 3 → Orienté loyauté et coopération (Poufsouffle)</li>
+                <li>Profil 4 → Orienté ambition et stratégie (Serpentard)</li>
             </ul>
         </section>
 
-        <section>
-            <h2>Technologies & Concepts</h2>
+        <section id="methodologie">
+            <h2>Méthodologie & Difficultés</h2>
             <ul>
-                <li>Langage Python 3</li>
-                <li>Structures conditionnelles et contrôle de flux</li>
-                <li>Fonctions et modularité du code</li>
-                <li>Tests unitaires automatisés</li>
+                <li>Analyse approfondie du besoin et modélisation algorithmique</li>
+                <li>Implémentation en respectant un style de programmation impératif et modulaire</li>
+                <li>Gestion rigoureuse des structures de données (listes, dictionnaires)</li>
+                <li>Résolution des cas d'égalité lors de la recherche du score maximal</li>
             </ul>
         </section>
 
-        <section>
-            <h2>Méthodologie</h2>
-            <ul>
-                <li>Analyse approfondie du besoin et du problème</li>
-                <li>Conception algorithmique et modélisation</li>
-                <li>Implémentation propre dans le fichier Python</li>
-                <li>Campagne de tests et validation opérationnelle</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Difficultés rencontrées</h2>
-            <ul>
-                <li>Gestion robuste des cas d’égalité entre plusieurs scores</li>
-                <li>Structuration propre et découpage modulaire du code</li>
-                <li>Mise en place de jeux de tests couvrants pour valider les règles métier</li>
-            </ul>
-        </section>
-
-        <section>
+        <section id="resultats">
             <h2>Résultats obtenus</h2>
             <p>
-                Un programme fonctionnel et testé a été développé, permettant de traiter automatiquement les réponses et d'émettre une décision de répartition cohérente et sans ambiguïté.
+                Un programme fonctionnel et validé par des jeux d'essais a été livré. Il permet de traiter automatiquement un fichier texte de réponses et d'émettre une décision de répartition instantanée et sans ambiguïté.
             </p>
         </section>
 
-        <section>
+        <section id="competences">
             <h2>Compétences développées</h2>
             <div class="tags-wrapper">
                 <span class="tag">Algorithmique</span>
-                <span class="tag">Python</span>
-                <span class="tag">Logique de décision</span>
+                <span class="tag">Python 3</span>
+                <span class="tag">Structures de données</span>
                 <span class="tag">Tests unitaires</span>
+                <span class="tag">Travail en binôme</span>
             </div>
         </section>
 
-        <div class="btn-container">
-            <a href="index.html" class="btn">← Retour à l'accueil</a>
-        </div>
+        <section id="retour" style="border-bottom: none;">
+            <a href="index.html#projects" class="btn-back">← Retour aux projets</a>
+        </section>
     </main>
 
     <footer>
