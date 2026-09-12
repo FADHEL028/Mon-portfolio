@@ -2,245 +2,405 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SAE S1.06 – Empreinte numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAE S1.06 — Empreinte numérique d’une entreprise</title>
 
     <style>
-        :root {
-            --bg:        #0a0f1e;
-            --surface:   #111827;
-            --surface2:  #1a2236;
-            --text:      #e8eaf0;
-            --muted:     #64748b;
-            --border:    #1e2d45;
-            --accent:    #3498db;
-            --accent-rgb: 52, 152, 219;
-            --radius:    10px;
-            --font-head: 'Syne', sans-serif;
-            --font-mono: 'DM Mono', monospace;
-        }
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font-head);
-            line-height: 1.7;
-            transition: background 0.3s, color 0.3s;
-        }
+/* =====================
+   VARIABLES & THEMES
+   ===================== */
+:root {
+  --bg:           #080c14;
+  --surface:      rgba(15, 23, 42, 0.65);
+  --surface-hover:rgba(30, 41, 59, 0.8);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.4);
+  
+  --text:         #f8fafc;
+  --muted:        #94a3b8;
+  
+  --accent:       #38bdf8;
+  --accent-glow:  rgba(56, 189, 248, 0.15);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  
+  --radius:       12px;
+  --font-sans:    'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
 
-        header {
-            padding: 5rem 2rem 3rem;
-            max-width: 860px;
-            margin: 0 auto;
-            border-bottom: 0.5px solid var(--border);
-        }
+body.light {
+  --bg:           #f1f5f9;
+  --surface:      rgba(255, 255, 255, 0.85);
+  --surface-hover:rgba(255, 255, 255, 1);
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(2, 132, 199, 0.4);
+  
+  --text:         #0f172a;
+  --muted:        #475569;
+  
+  --accent:       #0284c7;
+  --accent-glow:  rgba(2, 132, 199, 0.08);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+}
 
-        section {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-            border-bottom: 0.5px solid var(--border);
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        section h2 {
-            font-size: 0.75rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 2rem;
-        }
+html { scroll-behavior: smooth; }
 
-        ul {
-            line-height: 1.6;
-        }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--accent-glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
+}
 
-        .tag {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 3px 10px;
-            border-radius: 4px;
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 0.5px solid rgba(var(--accent-rgb), 0.25);
-            margin: 3px 2px;
-        }
-        section .btn{
-            align-self: flex-start;
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: calc(var(--radius) / 2);
-            background: rgba(var(--accent-rgb), 0.1);
-            color: var(--accent);
-            border: 0.5px solid rgba(var(--accent-rgb), 0.3);
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .btn {
-            display: inline-block;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            padding: 10px 24px;
-            border-radius: var(--radius);
-            background: var(--accent);
-            color: var(--bg);
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
 
-        .btn:hover { opacity: 0.85; }
-                div:has(#mode) {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: flex-end;
-        }
+/* =====================
+   LAYOUT
+   ===================== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
-        #mode {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            padding: 6px 14px;
-            border-radius: var(--radius);
-            border: 0.5px solid var(--border);
-            background: transparent;
-            color: var(--muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.04em;
-        }
+/* =====================
+   NAVBAR
+   ===================== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
 
-        #mode:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        @media (max-width: 600px) {
-            header, nav, section, footer,
-            div:has(#mode) { padding-left: 1.25rem; padding-right: 1.25rem; }
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+}
 
-            nav { gap: 1.25rem; flex-wrap: wrap; }
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
 
-            .projects { grid-template-columns: 1fr; }
-        }
+nav a:hover, nav a:focus-visible {
+  color: var(--text);
+}
+
+#mode {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+#mode:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* =====================
+   HEADER
+   ===================== */
+header {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+header .subtitle {
+  font-size: 1.15rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* =====================
+   SECTIONS & CONTENT
+   ===================== */
+section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+p strong {
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ul li {
+  font-size: 1rem;
+  color: var(--muted);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* =====================
+   BUTTONS
+   ===================== */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+footer {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
 
-<header>
-    <h1>SAE S1.06</h1>
-    <p>Empreinte numérique d’une entreprise</p>
-</header>
-<div><button id="mode">Mode Clair</button></div>
-<section>
-    <h2> Contexte</h2>
-    <p>
-        Cette SAÉ consiste à analyser l’empreinte numérique d’une entreprise française
-        et les actions mises en place pour réduire son impact environnemental.
-    </p>
-</section>
+<div class="container">
+    <nav aria-label="Navigation principale">
+        <div class="nav-links">
+            <a href="index.html">← Accueil</a>
+            <a href="index.html#projects">Projets</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button id="mode" aria-label="Changer le thème">Mode Clair</button>
+    </nav>
 
-<section>
-    <h2> Objectifs</h2>
-    <ul>
-        <li>Comprendre l’impact écologique du numérique</li>
-        <li>Analyser une entreprise</li>
-        <li>Étudier les stratégies de réduction</li>
-        <li>Présenter les résultats</li>
-    </ul>
-</section>
+    <header>
+        <h1><span class="title-gradient">SAÉ S1.06</span></h1>
+        <p class="subtitle">Analyse de l’empreinte numérique d’une entreprise</p>
+    </header>
 
-<section>
-    <h2> Entreprise étudiée</h2>
-    <p>
-        Nom de l’entreprise : <strong>À compléter</strong><br>
-        Analyse du modèle économique et de l’impact environnemental.
-    </p>
-</section>
+    <main>
+        <section id="contexte">
+            <h2>Contexte</h2>
+            <p>
+                Cette SAÉ consiste à étudier et évaluer l’empreinte numérique globale d’une entreprise française, tout en analysant les stratégies et démarches d'éco-conception mises en œuvre pour réduire son impact environnemental.
+            </p>
+        </section>
 
-<section>
-    <h2> Outils utilisés</h2>
-    <ul>
-        <li>Recherche documentaire</li>
-        <li>Articles et rapports</li>
-        <li>Word / PowerPoint</li>
-        <li>Outils vidéo</li>
-    </ul>
-</section>
+        <section id="objectifs">
+            <h2>Objectifs</h2>
+            <ul>
+                <li>Appréhender les enjeux et la réalité de l’impact écologique des technologies numériques</li>
+                <li>Auditer et analyser la maturité écologique d'une entreprise cible</li>
+                <li>Étudier les démarches Numérique Responsable et les plans d'action associés</li>
+                <li>Synthétiser et présenter les conclusions sous forme de rapport d'étude et de supports multimédias</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Méthodologie</h2>
-    <ul>
-        <li>Recherche d’informations fiables</li>
-        <li>Analyse des données</li>
-        <li>Rédaction du rapport</li>
-        <li>Création d’une vidéo</li>
-    </ul>
-</section>
+        <section id="entreprise">
+            <h2>Entreprise étudiée</h2>
+            <p>
+                Analyse ciblée de la structure, du modèle économique et des pratiques RSE (Responsabilité Sociétale des Entreprises) au regard de la consommation d'énergie, de la gestion du parc informatique et des services en ligne.
+            </p>
+        </section>
 
-<section>
-    <h2> Difficultés rencontrées</h2>
-    <ul>
-        <li>Fiabilité des sources</li>
-        <li>Compréhension des enjeux écologiques</li>
-        <li>Synthèse des informations</li>
-    </ul>
-</section>
+        <section id="outils">
+            <h2>Outils & Ressources</h2>
+            <div class="tags-wrapper">
+                <span class="tag">Recherche documentaire</span>
+                <span class="tag">Rapports RSE & Bilan Carbone</span>
+                <span class="tag">Suite Bureautique (Docs / Slides)</span>
+                <span class="tag">Outils de montage vidéo</span>
+            </div>
+        </section>
 
-<section>
-    <h2> Résultats</h2>
-    <p>
-        Ce projet m’a permis de mieux comprendre l’impact environnemental du numérique
-        et les actions mises en place par les entreprises pour le réduire.
-    </p>
-</section>
+        <section id="methodologie">
+            <h2>Méthodologie appliquée</h2>
+            <ul>
+                <li>Collecte et vérification d’informations à partir de sources spécialisées et de rapports officiels</li>
+                <li>Analyse critique des données quantitatives et qualitatives recueillies</li>
+                <li>Rédaction d’un rapport de synthèse structuré et argumenté</li>
+                <li>Création d’un support vidéo vulgarisé pour la restitution orale du projet</li>
+            </ul>
+        </section>
 
-<section>
-    <h2> Compétences développées</h2>
-    <div class="tag">Analyse</div>
-    <div class="tag">Recherche</div>
-    <div class="tag">Travail en équipe</div>
-    <div class="tag">Communication</div>
-</section>
+        <section id="difficultes">
+            <h2>Difficultés rencontrées</h2>
+            <ul>
+                <li>Évaluation de la fiabilité et de l'impartialité des sources d'information d'entreprise</li>
+                <li>Assimilation de concepts complexes liés à l'ACV (Analyse du Cycle de Vie) et à l'impact Carbone</li>
+                <li>Effort de synthèse pour condenser des données volumineuses en un livrable clair</li>
+            </ul>
+        </section>
 
-<section>
-    <a href="index.html" class="btn"> Retour aux projets</a>
-</section>
+        <section id="resultats">
+            <h2>Résultats</h2>
+            <p>
+                Ce projet m’a apporté une prise de conscience approfondie sur la matérialité et les coûts écologiques du numérique (infrastructures, serveurs, terminaux), tout en me permettant d'identifier les leviers concrets qu'une entreprise peut actionner pour sa transition écologique.
+            </p>
+        </section>
+
+        <section id="competences">
+            <h2>Compétences développées</h2>
+            <div class="tags-wrapper">
+                <span class="tag">Analyse d'impact</span>
+                <span class="tag">Recherche documentaire</span>
+                <span class="tag">Numérique Responsable</span>
+                <span class="tag">Travail en équipe</span>
+                <span class="tag">Communication & Vidéo</span>
+            </div>
+        </section>
+
+        <section id="retour" style="border-bottom: none;">
+            <a href="index.html#projects" class="btn-back">← Retour aux projets</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Fadel Thiam</p>
+        <p>IUT de Villetaneuse — USPN</p>
+    </footer>
+</div>
+
 <script>
-    let modeButton = document.getElementById('mode');
-    modeButton.addEventListener('click', () => {
-        document.body.classList.toggle('light-mode');
-        if(document.body.classList.contains('light-mode')) {
-            modeButton.textContent = 'Mode Sombre';
-            document.body.style.background = '#f8fafc'; 
-            document.body.style.color = '#0f172a';
-            document.querySelector('header').style.background = '#ffffff';
-            document.querySelector('header h1').style.color = '#0f172a';
-            document.querySelector('nav').style.background = '#f1f5f9';
-            $('.initialism').css('color' , '#0f172a');
-            $('.card').css('background', '#ffffff');
-            $('h3').css('color', '#0f172a')
-            document.querySelector('footer').style.background = '#f1f5f9';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        } else {
-            modeButton.textContent = 'Mode Clair';
-            document.body.style.background = '#0a0f1e';
-            document.body.style.color = '#e8eaf0';
-            document.querySelector('header').style.background = '#111827';
-            document.querySelector('header h1').style.color = '#e8eaf0';
-            document.querySelector('nav').style.background = '#1a2236';  
-            $('.initialism').css('color' , '#e8eaf0');
-            $('.card').css('background', '#111827');
-            $('h3').css('color', 'white')
-            document.querySelector('footer').style.background = '#1a2236';
-            document.querySelectorAll('nav a').forEach(a=>a.style.color = '#64748b');
-        }
-    });
+  const modeButton = document.getElementById('mode');
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    modeButton.textContent = 'Mode Sombre';
+  }
+
+  modeButton.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
 </script>
+
 </body>
 </html>

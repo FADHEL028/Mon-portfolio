@@ -434,27 +434,74 @@ footer {
                     <span>s101.py</span>
                     <a href="s101.py" download class="download-link"> Télécharger le fichier .py</a>
                 </div>
-                <pre><code># SAÉ S1.01 - Algorithme de répartition du Choixpeau
-# Auteurs: Fadel Thiam & Binôme
+                <pre><code># Code de la SAE S101 (uniquement les définitions de fonction)
 
-def calculer_score(reponses):
-    """
-    Calcule le profil de l'élève en fonction de ses réponses (1 à 10).
-    Retourne la catégorie dominante.
-    """
-    profils = {
-        "Gryffondor": reponses[0], # Action
-        "Serdaigle":  reponses[1], # Intellectuel
-        "Poufsouffle": reponses[2], # Social
-        "Serpentard":  reponses[3]  # Ambitieux
-    }
-    # Résolution des égalités et détermination de la maison
-    maison_attribuee = max(profils, key=profils.get)
-    return maison_attribuee
+def nombre_eleves(reponses):
+    return len(reponses) / 5
 
-if __name__ == "__main__":
-    print("=== Questionnaire du Choixpeau pas Magique ===")
-    # Exécution du programme principal...</code></pre>
+def eleves(reponses):
+    e = []
+    i = 0
+    while i < len(reponses):
+        e.append(reponses[i])
+        i += 5
+    return e
+
+def lecture_reponses(nom_fichier):
+    rep = []
+
+    f = open(nom_fichier)
+    lignes = f.readlines()
+    f.close()
+
+    # Pour chaque ligne
+    i = 0
+    while i < len(lignes):
+        cut = lignes[i].split(":")
+        # Ajout du nom
+        rep.append(cut[0])
+        scores = cut[1].split("/")
+        j = 0
+        while j < len(scores):
+            rep.append(int(scores[j]))
+            j += 1
+        i += 1
+    return rep
+
+
+def maison(reponses, indice):
+    ind_score_max = 0
+    
+    # Parcours des scores. Chaque score se trouve à l'indice indice + 1
+    j = 0
+    while j < 4:
+        if reponses[indice + 1 + j] > reponses[indice + 1 + ind_score_max]:
+            ind_score_max = j
+        j += 1
+    #ind_score max est un nombre entre 0 et 4 correspondant à la question où l'élève a mis le score maximum
+    m = ["Gryffondor", "Serdaigle", "Poufsouffle", "Serpentard"]
+    return m[ind_score_max]
+
+def repartition(reponses):
+    aff = {}
+    i = 0
+    while i < len(reponses):
+        aff[reponses[i]] = maison(reponses, i)
+        i += 5
+    return aff
+
+def nb_erreurs(d1, d2):
+
+    nb_erreurs = 0
+    
+    # Parcours de la liste des élèves
+    eleves = list(d1)
+    i = 0
+    while i < len(d1):
+        if d1[eleves[i]] != d2[eleves[i]]:
+            nb_erreurs += 1
+        i += 1
+    return nb_erreurs</code></pre>
             </div>
         </section>
 

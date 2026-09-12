@@ -2,192 +2,419 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>SAE S1.02 – Le nouveau choixpeau pas magique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAE S1.02 — Le nouveau choixpeau pas magique</title>
+
     <style>
-        @page {
-            size: A4;
-            margin: 15mm 12mm;
-            background-color: #0a0f1e;
-        }
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #0a0f1e;
-            color: #e8eaf0;
-            margin: 0;
-            padding: 0;
-            font-size: 10.5pt;
-            line-height: 1.6;
-        }
-        header {
-            background-color: #111827;
-            border-bottom: 1px solid #1e2d45;
-            margin: -15mm -12mm 20px -12mm;
-            padding: 25px 12mm;
-        }
-        h1 {
-            margin: 0;
-            font-size: 20pt;
-            color: #3498db;
-            letter-spacing: -0.5px;
-        }
-        header p {
-            margin: 5px 0 0 0;
-            font-size: 11pt;
-            color: #64748b;
-        }
-        section {
-            background-color: #111827;
-            border: 1px solid #1e2d45;
-            border-radius: 8px;
-            padding: 14px 18px;
-            margin-bottom: 14px;
-            page-break-inside: avoid;
-        }
-        h2 {
-            font-size: 9pt;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: #3498db;
-            margin-top: 0;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #1e2d45;
-            padding-bottom: 4px;
-        }
-        p {
-            margin-top: 0;
-            margin-bottom: 8px;
-            font-size: 10pt;
-        }
-        ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 4px;
-            font-size: 9.5pt;
-        }
-        .tag {
-            display: inline-block;
-            font-size: 8.5pt;
-            padding: 3px 10px;
-            border-radius: 4px;
-            background-color: rgba(52, 152, 219, 0.15);
-            color: #3498db;
-            border: 1px solid rgba(52, 152, 219, 0.3);
-            margin: 2px;
-        }
-        .btn {
-            display: inline-block;
-            font-size: 9pt;
-            padding: 8px 18px;
-            border-radius: 6px;
-            background-color: #3498db;
-            color: #0a0f1e;
-            font-weight: bold;
-            text-decoration: none;
-            margin-top: 5px;
-        }
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* =====================
+   VARIABLES & THEMES
+   ===================== */
+:root {
+  --bg:           #080c14;
+  --surface:      rgba(15, 23, 42, 0.65);
+  --surface-hover:rgba(30, 41, 59, 0.8);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.4);
+  
+  --text:         #f8fafc;
+  --muted:        #94a3b8;
+  
+  --accent:       #38bdf8;
+  --accent-glow:  rgba(56, 189, 248, 0.15);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  
+  --radius:       12px;
+  --font-sans:    'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+body.light {
+  --bg:           #f1f5f9;
+  --surface:      rgba(255, 255, 255, 0.85);
+  --surface-hover:rgba(255, 255, 255, 1);
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(2, 132, 199, 0.4);
+  
+  --text:         #0f172a;
+  --muted:        #475569;
+  
+  --accent:       #0284c7;
+  --accent-glow:  rgba(2, 132, 199, 0.08);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--accent-glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* =====================
+   LAYOUT
+   ===================== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* =====================
+   NAVBAR
+   ===================== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+}
+
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover, nav a:focus-visible {
+  color: var(--text);
+}
+
+#mode {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+#mode:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* =====================
+   HEADER
+   ===================== */
+header {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+header .subtitle {
+  font-size: 1.15rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* =====================
+   SECTIONS & CONTENT
+   ===================== */
+section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+p strong {
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ul li {
+  font-size: 1rem;
+  color: var(--muted);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* =====================
+   BUTTONS
+   ===================== */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+footer {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>SAE S1.02</h1>
-    <p>Le nouveau choixpeau pas magique de Poudlard</p>
-</header>
+<div class="container">
+    <nav aria-label="Navigation principale">
+        <div class="nav-links">
+            <a href="index.html">← Accueil</a>
+            <a href="index.html#projects">Projets</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button id="mode" aria-label="Changer le thème">Mode Clair</button>
+    </nav>
 
-<section>
-    <h2>Contexte</h2>
-    <p>
-        Cette SAÉ est la suite de la SAÉ S1.01. Elle vise à améliorer la méthode de répartition des élèves
-        dans les maisons de Poudlard en utilisant des techniques de similarité et de machine learning simplifié.
-    </p>
-</section>
+    <header>
+        <h1><span class="title-gradient">SAÉ S1.02</span></h1>
+        <p class="subtitle">Le nouveau choixpeau pas magique de Poudlard — Partie 2</p>
+    </header>
 
-<section>
-    <h2>Objectifs</h2>
-    <ul>
-        <li>Exploiter des données de questionnaires (10 questions)</li>
-        <li>Implémenter la distance euclidienne</li>
-        <li>Développer un système de classification</li>
-        <li>Améliorer la précision avec k plus proches voisins</li>
-    </ul>
-</section>
+    <main>
+        <section id="contexte">
+            <h2>Contexte</h2>
+            <p>
+                Cette SAÉ est la suite directe de la SAÉ S1.01. Elle vise à perfectionner la méthode de répartition des élèves dans les maisons de Poudlard en exploitant des techniques avancées de mesure de similarité et des algorithmes d'apprentissage supervisé (Machine Learning simplifié).
+            </p>
+        </section>
 
-<section>
-    <h2>Données utilisées</h2>
-    <p>
-        Chaque élève répond à 10 questions notées de 1 à 10. Les données sont stockées sous forme de dictionnaire :
-    </p>
-    <ul>
-        <li><strong>Clé :</strong> nom de l’élève</li>
-        <li><strong>Valeur :</strong> liste de 10 entiers</li>
-    </ul>
-</section>
+        <section id="objectifs">
+            <h2>Objectifs</h2>
+            <ul>
+                <li>Exploiter un jeu de données enrichi via un questionnaire étendu (10 questions)</li>
+                <li>Implémenter le calcul de la distance euclidienne en dimension 10</li>
+                <li>Développer un système robuste de classification automatique</li>
+                <li>Améliorer la précision globale de l'attribution avec l'algorithme des <em>k</em> plus proches voisins (k-NN)</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Méthode de calcul</h2>
-    <p>
-        La similarité entre deux élèves est mesurée grâce à la distance euclidienne calculée sur les 10 réponses.
-    </p>
-    <ul>
-        <li>Plus la distance est faible, plus les profils sont proches</li>
-        <li>Distance nulle = réponses identiques</li>
-    </ul>
-</section>
+        <section id="donnees">
+            <h2>Données utilisées</h2>
+            <p style="margin-bottom: 1rem;">
+                Chaque élève répond à un questionnaire de 10 questions notées de 1 à 10. Les profils sont modélisés sous forme de dictionnaire Python :
+            </p>
+            <ul>
+                <li><strong>Clé :</strong> Nom de l’élève</li>
+                <li><strong>Valeur :</strong> Liste (vecteur) de 10 entiers correspondant aux caractéristiques</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Algorithmes implémentés</h2>
-    <ul>
-        <li>Nearest Neighbor (1 plus proche voisin)</li>
-        <li>K-Nearest Neighbors</li>
-        <li>Tri des voisins par distance</li>
-        <li>Vote majoritaire des maisons</li>
-    </ul>
-</section>
+        <section id="calcul">
+            <h2>Méthode de calcul</h2>
+            <p style="margin-bottom: 1rem;">
+                La proximité entre deux élèves est calculée en mesurant la distance euclidienne multidimensionnelle sur l'ensemble des réponses :
+            </p>
+            <ul>
+                <li>Plus la distance calculée est faible, plus les profils sont similaires</li>
+                <li>Une distance égale à zéro indique des réponses rigoureusement identiques</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Fonctions principales</h2>
-    <ul>
-        <li><code>create_answers_from_text_file</code></li>
-        <li><code>euclidean_distance</code></li>
-        <li><code>euclidean_house</code></li>
-        <li><code>NN</code></li>
-        <li><code>NN_repartition</code></li>
-    </ul>
-</section>
+        <section id="algorithmes">
+            <h2>Algorithmes implémentés</h2>
+            <ul>
+                <li><strong>Nearest Neighbor :</strong> Classification basée sur le profil le plus proche (1-NN)</li>
+                <li><strong>K-Nearest Neighbors :</strong> Généralisation aux <em>k</em> voisins les plus proches</li>
+                <li>Tri et sélection dynamique des voisins par ordre croissant de distance</li>
+                <li>Prise de décision basée sur le vote majoritaire des maisons associées aux voisins</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Évolution du projet</h2>
-    <ul>
-        <li>Passage de 4 à 10 questions</li>
-        <li>Utilisation de plusieurs références (40 fantômes)</li>
-        <li>Amélioration avec k plus proches voisins</li>
-    </ul>
-</section>
+        <section id="fonctions">
+            <h2>Fonctions principales</h2>
+            <ul>
+                <li><code>create_answers_from_text_file</code> : Chargement et structuration des données brutes</li>
+                <li><code>euclidean_distance</code> : Calcul de la distance entre deux vecteurs de caractéristiques</li>
+                <li><code>euclidean_house</code> : Identification de la maison la plus proche</li>
+                <li><code>NN</code> / <code>NN_repartition</code> : Fonctions de classification et d'attribution globale</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Résultats</h2>
-    <p>
-        L’ajout de nouvelles données et l’utilisation du k-NN permettent d’améliorer la précision
-        de la répartition des élèves par rapport à la méthode initiale.
-    </p>
-</section>
+        <section id="evolution">
+            <h2>Évolution du projet</h2>
+            <ul>
+                <li>Passage d'un modèle simple à 4 critères vers une analyse sur 10 dimensions</li>
+                <li>Extension du dataset de référence (intégration de 40 fantômes de référence)</li>
+                <li>Transition d'un modèle 1-NN vers un algorithme k-NN pour éliminer les biais</li>
+            </ul>
+        </section>
 
-<section>
-    <h2>Compétences développées</h2>
-    <div class="tag">Algorithmique</div>
-    <div class="tag">Python</div>
-    <div class="tag">Machine Learning</div>
-    <div class="tag">Structures de données</div>
-</section>
+        <section id="resultats">
+            <h2>Résultats</h2>
+            <p>
+                L'enrichissement des données d'entrée couplé à l'implémentation du k-NN a permis d'augmenter significativement la précision et la stabilité de la répartition des élèves par rapport au prototype initial.
+            </p>
+        </section>
 
-<section style="background: transparent; border: none; padding: 0;">
-    <a href="index.html" class="btn">Retour aux projets</a>
-</section>
+        <section id="competences">
+            <h2>Compétences développées</h2>
+            <div class="tags-wrapper">
+                <span class="tag">Algorithmique</span>
+                <span class="tag">Programmation Python</span>
+                <span class="tag">Machine Learning (k-NN)</span>
+                <span class="tag">Structures de données</span>
+            </div>
+        </section>
+
+        <section id="retour" style="border-bottom: none;">
+            <a href="index.html#projects" class="btn-back">← Retour aux projets</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Fadel Thiam</p>
+        <p>IUT de Villetaneuse — USPN</p>
+    </footer>
+</div>
+
+<script>
+  const modeButton = document.getElementById('mode');
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    modeButton.textContent = 'Mode Sombre';
+  }
+
+  modeButton.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>
 
 </body>
 </html>
