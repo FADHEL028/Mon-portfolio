@@ -405,18 +405,18 @@ footer {
         <section id="contexte">
             <h2>Contexte</h2>
             <p>
-                Cette SAÉ s'inscrit dans le cadre de l'apprentissage des services réseaux avancés sous Linux[cite: 3]. L'objectif principal était d'installer, de configurer et de sécuriser un environnement serveur complet **LAMP** (Linux, Apache2, MariaDB, PHP) sur une machine poste client[cite: 3], puis de déployer divers services réseaux (FTP, SSH, VirtualBox) tout en effectuant des analyses de trames pour comprendre les mécanismes de sécurité et d'encapsulation[cite: 3].
+                Cette SAÉ s'inscrit dans le cadre de l'apprentissage des services réseaux avancés sous Linux. L'objectif principal était d'installer, de configurer et de sécuriser un environnement serveur complet **LAMP** (Linux, Apache2, MariaDB, PHP) sur une machine poste client, puis de déployer divers services réseaux (FTP, SSH, VirtualBox) tout en effectuant des analyses de trames pour comprendre les mécanismes de sécurité et d'encapsulation.
             </p>
         </section>
 
         <section id="objectifs">
             <h2>Objectifs & Configurations clés</h2>
             <ul>
-                <li><strong>Stack LAMP & Base de données :</strong> Déploiement du serveur web Apache2 avec extension PHP-PDO et installation du SGBD MariaDB[cite: 3]. Création d'un utilisateur et d'une base de données dédiée avec gestion stricte des privilèges SQL[cite: 3].</li>
-                <li><strong>Développement Web Dynamic :</strong> Conception d'une page PHP interrogeant la base de données (table <code>personnes</code>) et sécurisation du répertoire <code>public_html</code> via authentification <code>.htaccess</code>[cite: 3].</li>
+                <li><strong>Stack LAMP & Base de données :</strong> Déploiement du serveur web Apache2 avec extension PHP-PDO et installation du SGBD MariaDB[cite: 3]. Création d'un utilisateur et d'une base de données dédiée avec gestion stricte des privilèges SQL.</li>
+                <li><strong>Développement Web Dynamic :</strong> Conception d'une page PHP interrogeant la base de données (table <code>personnes</code>) et sécurisation du répertoire <code>public_html</code> via authentification <code>.htaccess</code>.</li>
                 <li><strong>Serveur FTP (vsftpd) :</strong> Configuration fine autorisant le téléchargement anonyme et restreignant le téléversement (upload) aux comptes utilisateurs locaux[cite: 3].</li>
-                <li><strong>Sécurisation SSH :</strong> Hardening du service SSH (désactivation des connexions <code>root</code> directes, changement du port standard pour le port <code>60122</code>) et déploiement d'une authentification par paire de clés asymétriques (RSA/ED25519) sans mot de passe[cite: 3].</li>
-                <li><strong>Analyse réseau & Virtualisation :</strong> Capture et étude de paquets HTTP/FTP non chiffrés via <strong>Wireshark</strong> (analyse du codage Base64)[cite: 3] et mise en place d'un environnement de simulation réseau <strong>Marionnet</strong> sous VirtualBox[cite: 3].</li>
+                <li><strong>Sécurisation SSH :</strong> Hardening du service SSH (désactivation des connexions <code>root</code> directes, changement du port standard pour le port <code>60122</code>) et déploiement d'une authentification par paire de clés asymétriques (RSA/ED25519) sans mot de passe.</li>
+                <li><strong>Analyse réseau & Virtualisation :</strong> Capture et étude de paquets HTTP/FTP non chiffrés via <strong>Wireshark</strong> (analyse du codage Base64)[cite: 3] et mise en place d'un environnement de simulation réseau <strong>Marionnet</strong> sous VirtualBox.</li>
             </ul>
         </section>
 
@@ -458,14 +458,14 @@ AuthorizedKeysFile .ssh/authorized_keys</code></pre>
         <section id="architecture">
             <h2>Architecture & Protocoles</h2>
             <p style="margin-bottom: 1rem;">
-                Le projet met en avant l'interaction entre les différentes couches applicatives et protocolaires[cite: 3] :
+                Le projet met en avant l'interaction entre les différentes couches applicatives et protocolaires :
             </p>
             <ul>
-                <li><strong>Service Web :</strong> Apache2 / HTTP (Port 80) avec module PHP, réécriture d'URL et restriction d'accès[cite: 3].</li>
-                <li><strong>Stockage de données :</strong> MariaDB avec connecteur <code>pdo_mysql</code> et encodage natif UTF-8[cite: 3].</li>
-                <li><strong>Transfert de fichiers :</strong> FTP via <code>vsftpd</code> (Ports 20/21) testé en ligne de commande via <code>lftp</code>[cite: 3].</li>
-                <li><strong>Administration distante :</strong> SSH (Port 60122) sécurisé par échange de clés d'empreinte publique[cite: 3].</li>
-                <li><strong>Analyse & Encapsulation :</strong> Inspection du modèle OSI (HTTP/TCP/IP/Ethernet) sous Wireshark[cite: 3].</li>
+                <li><strong>Service Web :</strong> Apache2 / HTTP (Port 80) avec module PHP, réécriture d'URL et restriction d'accès.</li>
+                <li><strong>Stockage de données :</strong> MariaDB avec connecteur <code>pdo_mysql</code> et encodage natif UTF-8.</li>
+                <li><strong>Transfert de fichiers :</strong> FTP via <code>vsftpd</code> (Ports 20/21) testé en ligne de commande via <code>lftp</code>.</li>
+                <li><strong>Administration distante :</strong> SSH (Port 60122) sécurisé par échange de clés d'empreinte publique.</li>
+                <li><strong>Analyse & Encapsulation :</strong> Inspection du modèle OSI (HTTP/TCP/IP/Ethernet) sous Wireshark.</li>
             </ul>
         </section>
 

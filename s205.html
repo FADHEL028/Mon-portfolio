@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAÉ S2.05 — Organisation d'une journée sur le Numérique Responsable</title>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* =====================
+   VARIABLES & THEMES
+   ===================== */
+:root {
+  --bg:           #080c14;
+  --surface:      rgba(15, 23, 42, 0.65);
+  --surface-hover:rgba(30, 41, 59, 0.8);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.4);
+  
+  --text:         #f8fafc;
+  --muted:        #94a3b8;
+  
+  --accent:       #38bdf8;
+  --accent-glow:  rgba(56, 189, 248, 0.15);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  
+  --radius:       12px;
+  --font-sans:    'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+body.light {
+  --bg:           #f1f5f9;
+  --surface:      rgba(255, 255, 255, 0.85);
+  --surface-hover:rgba(255, 255, 255, 1);
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(2, 132, 199, 0.4);
+  
+  --text:         #0f172a;
+  --muted:        #475569;
+  
+  --accent:       #0284c7;
+  --accent-glow:  rgba(2, 132, 199, 0.08);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--accent-glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* =====================
+   LAYOUT
+   ===================== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* =====================
+   NAVBAR
+   ===================== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+}
+
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover, nav a:focus-visible {
+  color: var(--text);
+}
+
+#mode {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+#mode:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* =====================
+   HEADER & BENTO GRID
+   ===================== */
+header {
+  padding: 3.5rem 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+header h1 {
+  font-size: clamp(1.8rem, 4.5vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+header .subtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.bento-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.bento-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+}
+
+.bento-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.bento-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* =====================
+   SECTIONS & CONTENT
+   ===================== */
+section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+p strong {
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ul li {
+  font-size: 1rem;
+  color: var(--muted);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* =====================
+   TABLES & CARDS
+   ===================== */
+.table-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: rgba(0, 0, 0, 0.2);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td {
+  color: var(--muted);
+}
+
+td strong {
+  color: var(--text);
+}
+
+/* =====================
+   CODE BLOCK
+   ===================== */
+.code-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.code-header {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+pre {
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* =====================
+   TAGS & BUTTONS
+   ===================== */
+.tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+footer {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .bento-info { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <nav aria-label="Navigation principale">
+        <div class="nav-links">
+            <a href="index.html">← Accueil</a>
+            <a href="index.html#projects">Projets</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button id="mode" aria-label="Changer le thème">Mode Clair</button>
+    </nav>
+
+    <header>
+        <span class="project-badge">SAÉ S2.05 — Gestion de projet</span>
+        <h1><span class="title-gradient">Journée du Numérique Responsable</span></h1>
+        <p class="subtitle">Organisation, cadrage et gestion globale d'un événement universitaire</p>
+
+        <div class="bento-info">
+            <div class="bento-item">
+                <span class="bento-label">Chefs de projet</span>
+                <span class="bento-value">K. Cissoko, M. Fadel Thiam</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Date de l'événement</span>
+                <span class="bento-value">Jeudi 14 Mai 2026</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Budget Enveloppe</span>
+                <span class="bento-value">2 000 € maximum</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- CONTEXTE & CADRAGE -->
+        <section id="cadrage">
+            <h2>I. Cadrage &amp; Périmètre du Projet</h2>
+            <p style="margin-bottom: 1.5rem;">
+                La direction a missionné notre équipe d'organiser une Journée Universitaire dédiée au <strong>Numérique Responsable</strong> pour sensibiliser l'ensemble de la communauté universitaire (étudiants en informatique et non-informatique, enseignants, administration).
+            </p>
+
+            <div class="bento-info" style="margin-bottom: 1.5rem;">
+                <div class="bento-item">
+                    <span class="bento-label">Périmètre Inclus</span>
+                    <span class="bento-value">Domaine informatique et autres départements de l'Université</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Périmètre Exclus</span>
+                    <span class="bento-value">Écoles d'ingénieurs et entreprises externes</span>
+                </div>
+            </div>
+
+            <p style="margin-bottom: 1rem;"><strong>Exigences clés :</strong></p>
+            <ul>
+                <li><strong>Exigences fonctionnelles :</strong> Sensibiliser sur l'usage du numérique responsable via des conférences, mini-jeux et quiz.</li>
+                <li><strong>Exigences non-fonctionnelles :</strong> Diffuser des messages accessibles à tous, assurer une forte visibilité et crédibilité institutionnelle.</li>
+                <li><strong>Contraintes majeures :</strong> Date fixe non négociable (14 Mai), budget strict de 2 000 € et disponibilité du matériel/acteurs.</li>
+            </ul>
+        </section>
+
+        <!-- OBJECTIFS & LIVRABLES -->
+        <section id="objectifs">
+            <h2>II. Objectifs &amp; Livrables</h2>
+            <p style="margin-bottom: 1rem;"><strong>Objectif Principal :</strong></p>
+            <p style="margin-bottom: 1.5rem;">
+                Organiser une journée événementielle en amphithéâtre pour sensibiliser un maximum d'étudiants et d'enseignants sur le bon usage du numérique dans la vie quotidienne et universitaire d'ici le 14 mai 2026.
+            </p>
+
+            <p style="margin-bottom: 1rem;"><strong>Objectifs Secondaires :</strong></p>
+            <ul>
+                <li>Adapter le contenu aux non-informaticiens pour élargir l'impact de l'événement.</li>
+                <li>Capacité d'accueil minimale de 100 participants (cible initiale de 200).</li>
+                <li>Programmer l'événement en accord avec la disponibilité des intervenants volontaires.</li>
+                <li>Proposer des activités interactives (mini-jeux en groupe avec enseignants/intervenants, vidéos, conférences avec FAQ).</li>
+            </ul>
+
+            <div class="tags-wrapper" style="margin-top: 1.5rem;">
+                <span class="tag">L1: Planning de pilotage</span>
+                <span class="tag">L2: Supports de communication</span>
+                <span class="tag">L3: Logistique &amp; Matériel</span>
+                <span class="tag">L4: Réalisation &amp; Animation</span>
+                <span class="tag">L5: Bilan &amp; Évaluation</span>
+            </div>
+        </section>
+
+        <!-- GOUVERNANCE & RACI -->
+        <section id="gouvernance">
+            <h2>III. Gouvernance &amp; Matrice RACI</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Attribution rigoureuse des rôles pour structurer les responsabilités entre l'équipe projet (MOA/MOE), l'administration, le service communication, la logistique, les enseignants et les associations.
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tâches</th>
+                            <th>Chef Projet</th>
+                            <th>Admin.</th>
+                            <th>Enseignants</th>
+                            <th>Extérieurs</th>
+                            <th>Logistique</th>
+                            <th>Assos</th>
+                            <th>Com.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Définir thème projet</td>
+                            <td><strong>R</strong></td>
+                            <td><strong>A</strong></td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>C</td>
+                            <td>I</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>Déroulement événement</td>
+                            <td><strong>R</strong></td>
+                            <td>I</td>
+                            <td>C</td>
+                            <td>C</td>
+                            <td><strong>R</strong>
+                            <td>C</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>Recherche partenaires</td>
+                            <td><strong>R</strong></td>
+                            <td>C</td>
+                            <td>I</td>
+                            <td>C</td>
+                            <td>I</td>
+                            <td>C</td>
+                            <td>I</td>
+                        </tr>
+                        <tr>
+                            <td>Financement</td>
+                            <td>C</td>
+                            <td><strong>A/R</strong></td>
+                            <td>I</td>
+                            <td><strong>R</strong></td>
+                            <td>C</td>
+                            <td>I</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>Interventions</td>
+                            <td><strong>A</strong></td>
+                            <td>C</td>
+                            <td><strong>R</strong></td>
+                            <td><strong>R</strong></td>
+                            <td>-</td>
+                            <td><strong>R</strong></td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Mobilisation du public</td>
+                            <td><strong>A</strong></td>
+                            <td>I/C</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td><strong>R</strong></td>
+                            <td>I</td>
+                        </tr>
+                        <tr>
+                            <td>Communication &amp; promotion</td>
+                            <td>C</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>C</td>
+                            <td><strong>R</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Validation institutionnelle</td>
+                            <td>C</td>
+                            <td><strong>A</strong></td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>I</td>
+                        </tr>
+                        <tr>
+                            <td>Gestion du budget</td>
+                            <td><strong>R</strong></td>
+                            <td><strong>A</strong></td>
+                            <td>I</td>
+                            <td>I</td>
+                            <td>C</td>
+                            <td>I</td>
+                            <td>I</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--muted);">
+                R : Réalisateur | A : Approbateur | C : Consulté | I : Informé
+            </p>
+        </section>
+
+        <!-- WBS & BUDGET -->
+        <section id="planification">
+            <h2>IV. Découpage WBS &amp; Budget Prévisionnel</h2>
+            <p style="margin-bottom: 1rem;">
+                Le projet est découpé selon le WBS en 5 grandes phases : <strong>1. Gestion de projet</strong>, <strong>2. Planning opérationnel</strong>, <strong>3. Communication</strong>, <strong>4. Logistique</strong>, et <strong>5. Réalisation &amp; Bilan</strong>.
+            </p>
+
+            <div class="bento-info" style="margin-top: 1.5rem;">
+                <div class="bento-item">
+                    <span class="bento-label">Logistique (800 €)</span>
+                    <span class="bento-value">Entretien salle, matériel audio/vidéo, sécurité, restauration CROUS</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Communication (500 €)</span>
+                    <span class="bento-value">Affiches, vidéo promo, bracelets événementiels</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Intervenants (~250 €)</span>
+                    <span class="bento-value">Déplacements en VTC/Taxi pour le jour férié</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Imprévus (450 €)</span>
+                    <span class="bento-value">Marge de sécurité budgétaire</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- RISQUES ET SUIVI -->
+        <section id="risques">
+            <h2>V. Analyse des Risques &amp; Mitigation</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Risque identifié</th>
+                            <th>Criticité</th>
+                            <th>Conséquences</th>
+                            <th>Modalités de suivi / Plan d'action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Problèmes techniques en direct</strong></td>
+                            <td>Forte</td>
+                            <td>Interruption des présentations, dissipation du public</td>
+                            <td>Tests préalables du matériel AV, surveillance des connexions. Acceptation du risque en cas de panne générale.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Matériel défaillant ou manquant</strong></td>
+                            <td>Moyenne / Faible</td>
+                            <td>Mise en place perturbée, manque de collations</td>
+                            <td>Devis précis et commandes anticipées. Délégation globale de la logistique à un prestataire externe.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Retard dans les confirmations</strong></td>
+                            <td>Faible</td>
+                            <td>Programme finalisé tardivement, planning faussé</td>
+                            <td>Envoi des invitations 2 mois avant l'événement, relances systématiques au bout de 3 semaines.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- RETOUR REFLEXIF & BILAN -->
+        <section id="bilan">
+            <h2>VI. Bilan Prévisionnel &amp; Retour Réflexif</h2>
+            <p style="margin-bottom: 1rem;">
+                L’événement a permis d'atteindre l'objectif principal en proposant un contenu adapté et apprécié. En revanche, l'objectif de 200 personnes n'a été que partiellement atteint du fait des contraintes de transport liées à la date fériée (14 mai).
+            </p>
+            <ul>
+                <li><strong>Respect du planning :</strong> Suivi rigoureux grâce au diagramme de Gantt (de l'initialisation du 9 mars au rapport final du 23 mai).</li>
+                <li><strong>Transfert de risques :</strong> Succès de la sous-traitance logistique auprès d'un prestataire.</li>
+                <li><strong>Apprentissage :</strong> Gestion des arbitrages sous contraintes de budget et de temps, et concertation indispensable entre les membres du projet.</li>
+            </ul>
+        </section>
+
+        <section id="competences">
+            <h2>Compétences développées</h2>
+            <div class="tags-wrapper">
+                <span class="tag">Gestion de Projet</span>
+                <span class="tag">Cadrage &amp; WBS</span>
+                <span class="tag">Diagramme de Gantt</span>
+                <span class="tag">Matrice RACI</span>
+                <span class="tag">Gestion des Risques</span>
+                <span class="tag">Budget &amp; Logistique</span>
+            </div>
+        </section>
+
+        <section id="retour" style="border-bottom: none;">
+            <a href="index.html#projects" class="btn-back">← Retour aux projets</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Fadel Thiam</p>
+        <p>IUT de Villetaneuse — USPN</p>
+    </footer>
+</div>
+
+<script>
+  const modeButton = document.getElementById('mode');
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    modeButton.textContent = 'Mode Sombre';
+  }
+
+  modeButton.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>
+
+</body>
+</html>
