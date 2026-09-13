@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAÉ S2.04 — Exploitation d'une base de données</title>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* =====================
+   VARIABLES & THEMES
+   ===================== */
+:root {
+  --bg:           #080c14;
+  --surface:      rgba(15, 23, 42, 0.65);
+  --surface-hover:rgba(30, 41, 59, 0.8);
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.4);
+  
+  --text:         #f8fafc;
+  --muted:        #94a3b8;
+  
+  --accent:       #38bdf8;
+  --accent-glow:  rgba(56, 189, 248, 0.15);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  
+  --radius:       12px;
+  --font-sans:    'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+body.light {
+  --bg:           #f1f5f9;
+  --surface:      rgba(255, 255, 255, 0.85);
+  --surface-hover:rgba(255, 255, 255, 1);
+  --border:       rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(2, 132, 199, 0.4);
+  
+  --text:         #0f172a;
+  --muted:        #475569;
+  
+  --accent:       #0284c7;
+  --accent-glow:  rgba(2, 132, 199, 0.08);
+  --accent-gradient: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--accent-glow) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* =====================
+   LAYOUT
+   ===================== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* =====================
+   NAVBAR
+   ===================== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.75rem;
+}
+
+nav a {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover, nav a:focus-visible {
+  color: var(--text);
+}
+
+#mode {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+#mode:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* =====================
+   HEADER & BENTO GRID
+   ===================== */
+header {
+  padding: 3.5rem 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+header .subtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.bento-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.bento-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem;
+  border-radius: var(--radius);
+}
+
+.bento-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.bento-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* =====================
+   SECTIONS & CONTENT
+   ===================== */
+section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+section h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+p {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+p strong {
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ul li {
+  font-size: 1rem;
+  color: var(--muted);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* =====================
+   TABLES & CARDS
+   ===================== */
+.table-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: rgba(0, 0, 0, 0.2);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td {
+  color: var(--muted);
+}
+
+td strong {
+  color: var(--text);
+}
+
+/* =====================
+   CODE BLOCK
+   ===================== */
+.code-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.code-header {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+pre {
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* =====================
+   TAGS & BUTTONS
+   ===================== */
+.tags-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+/* =====================
+   FOOTER
+   ===================== */
+footer {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .bento-info { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 1rem; align-items: flex-start; }
+}
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <nav aria-label="Navigation principale">
+        <div class="nav-links">
+            <a href="index.html">← Accueil</a>
+            <a href="index.html#projects">Projets</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+        <button id="mode" aria-label="Changer le thème">Mode Clair</button>
+    </nav>
+
+    <header>
+        <span class="project-badge">SAÉ S2.04 — Groupe JFK</span>
+        <h1><span class="title-gradient">Exploitation d'une base de données</span></h1>
+        <p class="subtitle">Analyse, modélisation SQL et visualisation décisionnelle des prix du carburant</p>
+
+        <div class="bento-info">
+            <div class="bento-item">
+                <span class="bento-label">Équipe</span>
+                <span class="bento-value">K. Cissoko, J. Dar Yazid, F. Thiam</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Technologies</span>
+                <span class="bento-value">PostgreSQL, Python, Grafana</span>
+            </div>
+            <div class="bento-item">
+                <span class="bento-label">Domaine</span>
+                <span class="bento-value">Bases de données &amp; Analytics</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="organisation">
+            <h2>I. Organisation &amp; Planning (Livrable 1)</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Le groupe <strong>JFK (Groupe Cérès)</strong> a mis en place une organisation collaborative structurée autour d'échanges via Discord, Snapchat et Google Drive.
+            </p>
+
+            <div class="bento-info" style="margin-bottom: 2rem;">
+                <div class="bento-item">
+                    <span class="bento-label">Kandé CISSOKO</span>
+                    <span class="bento-value">Rédaction &amp; Gestion des livrables</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Mouhamed Fadel THIAM</span>
+                    <span class="bento-value">Analyse métier &amp; Conception SQL/Python</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Jawed DAR YAZID</span>
+                    <span class="bento-value">Développement technique &amp; BDD</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phase</th>
+                            <th>Période</th>
+                            <th>Objectifs</th>
+                            <th>Jalon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Phase 1</strong></td>
+                            <td>11 – 17 mai</td>
+                            <td>Cahier des charges, organisation de l'équipe et planning.</td>
+                            <td>Dépôt Livrable 1 (&le; 17 mai)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phase 2</strong></td>
+                            <td>18 – 24 mai</td>
+                            <td>Analyse des données sources, MCD et schéma relationnel.</td>
+                            <td>Dépôt Livrable 2 (&le; 24 mai)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phase 3</strong></td>
+                            <td>25 – 31 mai</td>
+                            <td>Script DDL PostgreSQL, nettoyage des données et requêtes SQL.</td>
+                            <td>Dépôt Livrable 3 (&le; 31 mai)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phase 4</strong></td>
+                            <td>1 – 7 juin</td>
+                            <td>Dashboard Grafana, visualisations et bilan stratégique.</td>
+                            <td>Dépôt Livrable Final (&le; 7 juin)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="modelisation">
+            <h2>II. Modélisation des Données (Livrable 2)</h2>
+            <p style="margin-bottom: 1rem;">
+                La modélisation s'appuie sur une analyse des entités métiers pour garantir une structure relationnelle normalisée :
+            </p>
+            <ul>
+                <li><strong>Station — Prix — Carburant :</strong> Historisation des prix selon le carburant et la date de mise à jour.</li>
+                <li><strong>Station — Rupture — Carburant :</strong> Suivi des périodes d'indisponibilité par type de carburant.</li>
+                <li><strong>Station — Service :</strong> Association plusieurs-à-plusieurs gérée via la table <code>station_service</code>.</li>
+                <li><strong>Horaire :</strong> Plages d'ouverture rattachées dynamiquement aux stations et à leurs services.</li>
+            </ul>
+
+            <div class="code-container" style="margin-top: 1.5rem;">
+                <div class="code-header">
+                    <span>Schema_Relationnel.txt</span>
+                </div>
+                <pre><code>station (<u>id_station</u>, localisation, adresse, enseigne)
+carburant (<u>id_carburant</u>, nom_carburant)
+prix (<u>id_prix</u>, #id_station, #id_carburant, prix, date_maj)
+rupture (<u>id_rupture</u>, #id_station, #id_carburant, date_debut, date_fin)
+service (<u>id_service</u>, nom_service)
+horaire (<u>id_horaire</u>, #id_station, #id_service, jour, heure_ouverture, heure_fermeture)
+station_service (<u>#id_station, #id_service</u>)</code></pre>
+            </div>
+        </section>
+
+        <section id="implementation">
+            <h2>III. Architecture SQL &amp; Traitements Python</h2>
+            <p style="margin-bottom: 1rem;">
+                Création des tables sous PostgreSQL et extraction des données imbriquées au format JSON via des scripts d'ETL Python :
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>script_creation_table.sql</span>
+                </div>
+                <pre><code>CREATE TABLE station (
+    id_station INT PRIMARY KEY,
+    localisation VARCHAR(255),
+    adresse TEXT,
+    enseigne VARCHAR(100)
+);
+
+CREATE TABLE carburant (
+    id_carburant INT PRIMARY KEY,
+    nom_carburant VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE prix (
+    id_prix SERIAL PRIMARY KEY,
+    id_station INT REFERENCES station(id_station),
+    id_carburant INT REFERENCES carburant(id_carburant),
+    prix NUMERIC(5,3),
+    date_maj TIMESTAMP
+);
+
+CREATE TABLE rupture (
+    id_rupture SERIAL PRIMARY KEY,
+    id_station INT REFERENCES station(id_station),
+    id_carburant INT REFERENCES carburant(id_carburant),
+    date_debut TIMESTAMP,
+    date_fin TIMESTAMP
+);</code></pre>
+            </div>
+
+            <div class="code-container" style="margin-top: 1.5rem;">
+                <div class="code-header">
+                    <span>creation_vue.sql (Top 20 Stations Gazole)</span>
+                </div>
+                <pre><code>WITH PrixMoyenCarburant AS (
+    SELECT AVG(prix) AS moyenne_nationale
+    FROM prix p
+    JOIN carburant c ON p.id_carburant = c.id_carburant
+    WHERE c.nom_carburant = 'Gazole'
+)
+SELECT 
+    s.id_station,
+    s.localisation,
+    p.prix AS prix_station,
+    ROUND(p.prix - pm.moyenne_nationale, 3) AS ecart_a_la_moyenne,
+    ROUND(((pm.moyenne_nationale - p.prix) / pm.moyenne_nationale) * 100, 1) AS pourcentage_economie
+FROM station s
+JOIN prix p ON s.id_station = p.id_station
+JOIN carburant c ON p.id_carburant = c.id_carburant
+CROSS JOIN PrixMoyenCarburant pm
+WHERE c.nom_carburant = 'Gazole'
+ORDER BY p.prix ASC
+LIMIT 20;</code></pre>
+            </div>
+        </section>
+
+        <section id="grafana">
+            <h2>IV. Visualisations Grafana</h2>
+            <div class="bento-info">
+                <div class="bento-item">
+                    <span class="bento-label">Timeseries</span>
+                    <span class="bento-value">Suivi de l'évolution temporelle des tarifs par carburant</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Geomap</span>
+                    <span class="bento-value">Cartographie dynamique du Top 20 des stations les plus compétitives</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Pie Chart</span>
+                    <span class="bento-value">Répartition des ruptures (GPLC: 32%, SP95: 28%, E85: 21%)</span>
+                </div>
+                <div class="bento-item">
+                    <span class="bento-label">Gauge</span>
+                    <span class="bento-value">2 265 stations équipées de plus de 10 services</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="competences">
+            <h2>Compétences développées</h2>
+            <div class="tags-wrapper">
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">SQL Avancé &amp; Vues</span>
+                <span class="tag">Modélisation MCD/MLD</span>
+                <span class="tag">Python (ETL / Pandas)</span>
+                <span class="tag">Grafana Analytics</span>
+                <span class="tag">Travail en équipe</span>
+            </div>
+        </section>
+
+        <section id="retour" style="border-bottom: none;">
+            <a href="index.html#projects" class="btn-back">← Retour aux projets</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Fadel Thiam</p>
+        <p>IUT de Villetaneuse — USPN</p>
+    </footer>
+</div>
+
+<script>
+  const modeButton = document.getElementById('mode');
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    modeButton.textContent = 'Mode Sombre';
+  }
+
+  modeButton.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light');
+    modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>
+
+</body>
+</html>

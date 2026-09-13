@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAÉ S2.01 — Développement Orienté Objet : Find My Word</title>
+    <title>SAÉ S2.03 — Installation de Services Réseaux</title>
 
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -381,22 +381,22 @@ footer {
     </nav>
 
     <header>
-        <span class="project-badge">SAÉ S2.01 — Travail en binôme</span>
-        <h1><span class="title-gradient">Find My Word</span></h1>
-        <p class="subtitle">Conception et développement d'une application de devinette de mots orientée objet</p>
+        <span class="project-badge">SAÉ S2.03 — Projet individuel</span>
+        <h1><span class="title-gradient">Installation de Services Réseaux</span></h1>
+        <p class="subtitle">Déploiement d'une infrastructure serveur Linux (LAMP, FTP, SSH, Virtualization & Analyse de trames)</p>
 
         <div class="bento-info">
             <div class="bento-item">
-                <span class="bento-label">Langage</span>
-                <span class="bento-value">Java 11 / POO</span>
+                <span class="bento-label">Environnement</span>
+                <span class="bento-value">Debian / Linux</span>
             </div>
             <div class="bento-item">
-                <span class="bento-label">Architecture</span>
-                <span class="bento-value">Séparation Modèle / Vue</span>
+                <span class="bento-label">Stack Web</span>
+                <span class="bento-value">LAMP (Apache, MariaDB, PHP)</span>
             </div>
             <div class="bento-item">
-                <span class="bento-label">Données</span>
-                <span class="bento-value">JSON / WordSet API</span>
+                <span class="bento-label">Sécurité & Réseau</span>
+                <span class="bento-value">SSH, vsftpd, Wireshark, .htaccess</span>
             </div>
         </div>
     </header>
@@ -405,105 +405,80 @@ footer {
         <section id="contexte">
             <h2>Contexte</h2>
             <p>
-                Cette SAÉ s'inscrit dans la ressource <strong>R201 — Développement orienté objet</strong>. L'objectif était de concevoir une version adaptée du jeu populaire <em>Wordle</em>, baptisée <strong>Find My Word</strong>. Le joueur doit deviner un mot secret de 5 lettres en un maximum de 6 tentatives[cite: 4], en s'aidant des indications de présence et de position fournies après chaque essai.
+                Cette SAÉ s'inscrit dans le cadre de l'apprentissage des services réseaux avancés sous Linux[cite: 3]. L'objectif principal était d'installer, de configurer et de sécuriser un environnement serveur complet **LAMP** (Linux, Apache2, MariaDB, PHP) sur une machine poste client[cite: 3], puis de déployer divers services réseaux (FTP, SSH, VirtualBox) tout en effectuant des analyses de trames pour comprendre les mécanismes de sécurité et d'encapsulation[cite: 3].
             </p>
         </section>
 
         <section id="objectifs">
-            <h2>Objectifs & Principes POO</h2>
+            <h2>Objectifs & Configurations clés</h2>
             <ul>
-                <li>Appliquer les principes fondateurs de la POO : encapsulation, abstraction, héritage et polymorphisme.</li>
-                <li>Assurer une séparation stricte des responsabilités entre le moteur de jeu et l'affichage console.</li>
-                <li>Modéliser le domaine d'application à l'aide de diagrammes de classes UML.</li>
-                <li>Charger dynamiquement des mots secrets à partir d'un fichier <code>JSON</code> via l'API dédiée.</li>
-                <li>Valider formellement la conformité des propositions par un jeu de tests unitaires automatisés.</li>
+                <li><strong>Stack LAMP & Base de données :</strong> Déploiement du serveur web Apache2 avec extension PHP-PDO et installation du SGBD MariaDB[cite: 3]. Création d'un utilisateur et d'une base de données dédiée avec gestion stricte des privilèges SQL[cite: 3].</li>
+                <li><strong>Développement Web Dynamic :</strong> Conception d'une page PHP interrogeant la base de données (table <code>personnes</code>) et sécurisation du répertoire <code>public_html</code> via authentification <code>.htaccess</code>[cite: 3].</li>
+                <li><strong>Serveur FTP (vsftpd) :</strong> Configuration fine autorisant le téléchargement anonyme et restreignant le téléversement (upload) aux comptes utilisateurs locaux[cite: 3].</li>
+                <li><strong>Sécurisation SSH :</strong> Hardening du service SSH (désactivation des connexions <code>root</code> directes, changement du port standard pour le port <code>60122</code>) et déploiement d'une authentification par paire de clés asymétriques (RSA/ED25519) sans mot de passe[cite: 3].</li>
+                <li><strong>Analyse réseau & Virtualisation :</strong> Capture et étude de paquets HTTP/FTP non chiffrés via <strong>Wireshark</strong> (analyse du codage Base64)[cite: 3] et mise en place d'un environnement de simulation réseau <strong>Marionnet</strong> sous VirtualBox[cite: 3].</li>
             </ul>
         </section>
 
         <section id="code">
-            <h2>Extrait de Code (Game.java)</h2>
+            <h2>Extrait de Script & Configuration</h2>
             <p style="margin-bottom: 1rem;">
-                Voici un extrait du moteur de jeu principal encapsulant la boucle de partie et l'analyse des tentatives.
+                Voici un aperçu de la connexion PDO PHP vers le SGBD MariaDB ainsi que de la configuration de sécurisation du service SSH[cite: 3].
             </p>
             <div class="code-container">
                 <div class="code-header">
-                    <span>Game.java</span>
-                    <a href="Game.java" download class="download-link">Télécharger les sources .java</a>
+                    <span>index.php / sshd_config</span>
+                    <a href="scripts-config-s203.zip" download class="download-link">Télécharger les scripts de conf</a>
                 </div>
-                <pre><code>public class Game {
-    private final IWordRepository repository;
-    private final Player player;
-    private Word secretWord;
-    private final List&lt;Attempt&gt; attempts;
-    private static final int MAX_ATTEMPTS = 6;
+                <pre><code>&lt;?php
+// Connexion PDO sécurisée au SGBD MariaDB
+$dbuser = 'e12345678';
+$dbname = 'e12345678';
+$password = 'SecretPass123!';
 
-    public Game(IWordRepository repository, Player player) {
-        this.repository = repository;
-        this.player = player;
-        this.attempts = new ArrayList&lt;&gt;();
-    }
+try {
+    $conn = new PDO("mysql:host=localhost;dbname=$dbname;charset=utf8", $dbuser, $password);
+    $conn-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Pb connexion base de données $dbname: " . $e-&gt;getMessage());
+}
 
-    public void startNewGame() {
-        this.secretWord = repository.getRandomWord();
-        this.attempts.clear();
-    }
+$sql = "SELECT Nom, Prénom, Tél FROM personnes";
+$req = $conn-&gt;query($sql);
+?&gt;
 
-    public LetterResult[] playAttempt(Word candidate) {
-        if (!candidate.isValid()) {
-            throw new IllegalArgumentException("Mot invalide.");
-        }
-        LetterResult[] results = secretWord.compareWith(candidate);
-        attempts.add(new Attempt(candidate, results));
-        return results;
-    }
-
-    public boolean isWon() {
-        if (attempts.isEmpty()) return false;
-        Attempt last = attempts.get(attempts.size() - 1);
-        return last.isAllCorrect();
-    }
-
-    public boolean isGameOver() {
-        return isWon() || attempts.size() >= MAX_ATTEMPTS;
-    }
-}</code></pre>
+# Configuration /etc/ssh/sshd_config (Hardening SSH)
+Port 60122
+PermitRootLogin no
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys</code></pre>
             </div>
         </section>
 
         <section id="architecture">
-            <h2>Architecture & Conception</h2>
+            <h2>Architecture & Protocoles</h2>
             <p style="margin-bottom: 1rem;">
-                Le projet est découpé de manière modulaire selon les rôles définis dans le sujet: 
+                Le projet met en avant l'interaction entre les différentes couches applicatives et protocolaires[cite: 3] :
             </p>
             <ul>
-                <li><strong><code>Game</code></strong> : Orchestration de la partie, suivi des essais et calcul du score.</li>
-                <li><strong><code>Word</code> & <code>Attempt</code></strong> : Encapsulation des mots de 5 lettres et vérification des règles de validité.</li>
-                <li><strong><code>IWordRepository</code></strong> : Interface permettant de basculer entre un dépôt réel (JSON) et un dépôt fixe pour les tests (<code>FixedWordRepository</code>).</li>
-                <li><strong><code>ConsoleView</code></strong> : Gestion des entrées/sorties utilisateur et affichage de la grille.</li>
-            </ul>
-        </section>
-
-        <section id="regles">
-            <h2>Analyse & Analyse des Lettres</h2>
-            <p style="margin-bottom: 1rem;">
-                Après chaque mot proposé, le programme associe un état à chaque lettre :
-            </p>
-            <ul>
-                <li><strong style="color: #4ade80;">OK</strong> : La lettre est correcte et bien placée à sa position.</li>
-                <li><strong style="color: #facc15;">PRESENT</strong> : La lettre appartient au mot mais se trouve à une autre position.</li>
-                <li><strong style="color: #f87171;">ABSENT</strong> : La lettre n'apparaît pas dans le mot secret.</li>
+                <li><strong>Service Web :</strong> Apache2 / HTTP (Port 80) avec module PHP, réécriture d'URL et restriction d'accès[cite: 3].</li>
+                <li><strong>Stockage de données :</strong> MariaDB avec connecteur <code>pdo_mysql</code> et encodage natif UTF-8[cite: 3].</li>
+                <li><strong>Transfert de fichiers :</strong> FTP via <code>vsftpd</code> (Ports 20/21) testé en ligne de commande via <code>lftp</code>[cite: 3].</li>
+                <li><strong>Administration distante :</strong> SSH (Port 60122) sécurisé par échange de clés d'empreinte publique[cite: 3].</li>
+                <li><strong>Analyse & Encapsulation :</strong> Inspection du modèle OSI (HTTP/TCP/IP/Ethernet) sous Wireshark[cite: 3].</li>
             </ul>
         </section>
 
         <section id="competences">
             <h2>Compétences développées</h2>
             <div class="tags-wrapper">
-                <span class="tag">Java 11</span>
-                <span class="tag">Programmation Orientée Objet</span>
-                <span class="tag">UML & Modélisation</span>
-                <span class="tag">Polymorphisme</span>
-                <span class="tag">Parsing JSON</span>
-                <span class="tag">Tests Unitaires (JUnit)</span>
+                <span class="tag">Linux / Administration Système</span>
+                <span class="tag">Stack LAMP (Apache, MariaDB, PHP)</span>
+                <span class="tag">Sécurité SSH & Clés Asymétriques</span>
+                <span class="tag">Serveur FTP (vsftpd)</span>
+                <span class="tag">Analyse de trames (Wireshark)</span>
+                <span class="tag">Virtualisation (VirtualBox / Marionnet)</span>
+                <span class="tag">SQL & PHP PDO</span>
             </div>
         </section>
 
