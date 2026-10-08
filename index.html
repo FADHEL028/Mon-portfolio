@@ -354,6 +354,56 @@ section h2::after {
   gap: 1.25rem;
 }
 
+.cv-viewer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.cv-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cv-controls label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+#cv-select {
+  flex: 1;
+  min-width: 220px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.cv-open-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cv-open-link:hover {
+  text-decoration: underline;
+}
+
+#cv-frame {
+  display: block;
+  width: 100%;
+  height: min(75vh, 850px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
 .contact-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -570,6 +620,21 @@ footer {
             </div>
         </section>
 
+        <section id="cv" aria-labelledby="heading-cv">
+          <h2 id="heading-cv">Mes CV</h2>
+          <div class="cv-viewer">
+            <div class="cv-controls">
+              <label for="cv-select">Choisir le CV à visionner :</label>
+              <select id="cv-select">
+                <option value="fichiers/CV-FT-ADFS.pdf">Développeur Full Stack</option>
+                <option value="fichiers/CV-THIAM-Fadel-Alternant-Data-Analyst.pdf">Data Analyst</option>
+              </select>
+              <a class="cv-open-link" id="cv-open-link" href="fichiers/CV-FT-ADFS.pdf" target="_blank" rel="noopener">Ouvrir dans un nouvel onglet</a>
+            </div>
+              <iframe id="cv-frame" src="fichiers/CV-FT-ADFS.pdf" title="CV de Fadel Thiam — Développeur Full Stack"></iframe>
+          </div>
+        </section>
+
         <section id="contact" aria-labelledby="heading-contact">
             <h2 id="heading-contact">Me contacter</h2>
             
@@ -589,10 +654,6 @@ footer {
                     <span class="contact-value">Mouhamed Fadel Thiam</span>
                 </a>
 
-                <a href="fichiers/CV-FT-ADFS.pdf" target="_blank" rel="noopener" class="contact-card">
-                    <span class="contact-label">Document</span>
-                    <span class="contact-value">Consulter mon CV</span>
-                </a>
             </div>
         </section>
     </main>
@@ -616,6 +677,21 @@ footer {
     const isLight = document.body.classList.toggle('light');
     modeButton.textContent = isLight ? 'Mode Sombre' : 'Mode Clair';
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+
+  const cvSelect = document.getElementById('cv-select');
+  const cvFrame = document.getElementById('cv-frame');
+  const cvOpenLink = document.getElementById('cv-open-link');
+  const cvTitles = {
+    'fichiers/CV-FT-ADFS.pdf': 'CV de Fadel Thiam — Développeur Full Stack',
+    'fichiers/CV-THIAM-Fadel-Alternant-Data-Analyst.pdf': 'CV de Fadel Thiam — Data Analyst'
+  };
+
+  cvSelect.addEventListener('change', () => {
+    const selectedCv = cvSelect.value;
+    cvFrame.src = selectedCv;
+    cvFrame.title = cvTitles[selectedCv];
+    cvOpenLink.href = selectedCv;
   });
 </script>
 
